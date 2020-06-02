@@ -1,0 +1,55 @@
+{
+	"editor.fontFamily": "Fira Code, Consolas, Inconsolata",
+	"editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "workbench.sideBar.location": "left",
+    "editor.minimap.maxColumn": 50,
+
+    "workbench.colorTheme": "Night Owl",
+	"workbench.colorCustomizations": {
+		"editorGutter.addedBackground": "#333",
+		"editorGutter.deletedBackground": "#333",
+		"editorGutter.modifiedBackground": "#333",
+	},
+
+	"breadcrumbs.enabled": true,
+    "editor.wordWrap": "on",
+    
+    "material-icon-theme.saturation": 0.8,
+
+	"editor.tabSize": 4,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    
+	"editor.formatOnSave": false,
+
+	"vetur.format.styleInitialIndent": true,
+	"vetur.format.scriptInitialIndent": true,
+	"vetur.format.options.tabSize": 4,
+	"vetur.format.options.useTabs": true,
+	"vetur.format.defaultFormatter.html": "prettyhtml",
+	"vetur.format.defaultFormatter.css": "prettier",
+	"vetur.format.defaultFormatter.postcss": "prettier",
+	"vetur.format.defaultFormatter.scss": "prettier",
+	"vetur.format.defaultFormatter.less": "prettier",
+	"vetur.format.defaultFormatter.stylus": "stylus-supremacy",
+	"vetur.format.defaultFormatter.js": "prettier",
+	"vetur.format.defaultFormatter.ts": "prettier",
+	"vetur.format.defaultFormatterOptions": {
+		"js-beautify-html": {},
+		"prettyhtml": {
+			"printWidth": 100,
+			"singleQuote": false
+		}
+	},
+	"stylusSupremacy.insertColons": false,
+	"stylusSupremacy.insertLeadingZeroBeforeFraction": false,
+	"stylusSupremacy.insertSemicolons": false,
+	"stylusSupremacy.insertBraces": false,
+
+	"prettier.disableLanguages": ["pdf", "hbs", "xlsx"]],
+	"prettier.semi": false
+}

@@ -1,0 +1,20 @@
+{
+	"recommendations": [
+        "octref.vetur",
+        
+		"esbenp.prettier-vscode",
+		"mblode.pretty-formatter",
+		"dbaeumer.vscode-eslint",
+        "thisismanta.stylus-supremacy",
+        
+        "sdras.night-owl",
+        "pkief.material-icon-theme",
+
+        "coenraads.bracket-pair-colorizer-2",
+        "vincaslt.highlight-matching-tag",
+        
+        "ritwickdey.liveserver",
+        "ms-vsliveshare.vsliveshare",
+        "ms-vscode-remote.remote-ssh"
+	]
+}
