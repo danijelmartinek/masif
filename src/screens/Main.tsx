@@ -4,6 +4,8 @@ import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme } from '/redux/actions';
 
+import MtGraph from '/components/atoms/mtGraph/'
+
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
 
@@ -40,6 +42,7 @@ const MainScreen = (props: PropsWithTheme) => {
 		>
 			<Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text>
             <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button>
+            <MtGraph></MtGraph>
 		</View>
 	);
 };
