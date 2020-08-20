@@ -112,44 +112,44 @@ let Theme: ThemeType = {
 
         size: {
             giga: `
-                font-size: ${hp('8.4%')};
-                line-height: ${hp('12.6%')};a
+                font-size: ${hp('8.4%')}px;
+                line-height: ${hp('12.6%')}px;
             `, //+2.0
             mega: `
-                font-size: ${hp('6.4%')};
-                line-height: ${hp('9.6%')};
+                font-size: ${hp('6.4%')}px;
+                line-height: ${hp('9.6%')}px;
             `, //+1.6
             kilo: `
-                font-size: ${hp('4.8%')};
-                line-height: ${hp('7.2%')};
+                font-size: ${hp('4.8%')}px;
+                line-height: ${hp('7.2%')}px;
             `, //+1.2
             alpha: `
-                font-size: ${hp('3.6%')};
-                line-height: ${hp('5.4%')};
+                font-size: ${hp('3.6%')}px;
+                line-height: ${hp('5.4%')}px;
             `, //+.8
             beta: `
-                font-size: ${hp('2.8%')};
-                line-height: ${hp('4.2%')};
+                font-size: ${hp('2.8%')}px;
+                line-height: ${hp('4.2%')}px;
             `, //+.6
             gama: `
-                font-size: ${hp('2.2%')};
-                line-height: ${hp('3.3%')};
+                font-size: ${hp('2.2%')}px;
+                line-height: ${hp('3.3%')}px;
             `, //+.4
             delta: `
-                font-size: ${hp('1.8%')};
-                line-height: ${hp('2.7%')};
+                font-size: ${hp('1.8%')}px;
+                line-height: ${hp('2.7%')}px;
             `, //+.2
             epsilon: `
-                font-size: ${hp('1.6%')};
-                line-height: ${hp('2.4%')};
+                font-size: ${hp('1.6%')}px;
+                line-height: ${hp('2.4%')}px;
             `, //+.1
             zeta: `
-                font-size: ${hp('1.5%')};
-                line-height: ${hp('2.25%')};
+                font-size: ${hp('1.5%')}px;
+                line-height: ${hp('2.25%')}px;
             `, //0
             mili: `
-                font-size: ${hp('1.1%')};
-                line-height: ${hp('1.65%')};
+                font-size: ${hp('1.1%')}px;
+                line-height: ${hp('1.65%')}px;
             `, //-.4
         }
     },

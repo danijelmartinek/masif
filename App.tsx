@@ -22,6 +22,9 @@ export default function App() {
                             name="Main"
                             component={MainScreen}
                             initialParams={{userId: '56'}}
+                            options={{
+                                headerShown: false,
+                            }}
                         />
                     </RootStack.Navigator>
                 </NavigationContainer>

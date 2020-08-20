@@ -9,6 +9,7 @@ import {
 	NativeScrollEvent
 } from 'react-native';
 import styled, { withTheme } from 'styled-components';
+
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
@@ -42,14 +43,41 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 	};
 
 	const OPTIONS: MtGraphOptionsType = {
-		visibleSegmentNum: 1,
+		visibleSegmentNum: 3,
 		segmentWidth: 50
 	};
 
 	const OFFSETS = fillWithInterval(
-		Math.ceil(550 / OPTIONS.segmentWidth),
+		Math.ceil(550 / OPTIONS.segmentWidth) + Math.floor(OPTIONS.visibleSegmentNum / 2),
 		wp(`${100 / OPTIONS.visibleSegmentNum}%`)
-	);
+    );
+
+    const getSelectedOffset = (eventOffsetX: number, offsets: number[], segmNum: number): number => {
+        let index: number = 0;
+
+        const eox: number = Math.round(eventOffsetX);
+        const segmentNumber = Math.floor(segmNum / 2);
+
+        if(eox <= 0) {
+            index = 0;
+        } else if (eox >= offsets[offsets.length - 1]) {
+            index = offsets.length - 1;
+        } else {
+            offsets.forEach((offx, ind) => {
+                if(offsets[ind + 1]) {
+                    if(eox >= offx && eox < offsets[ind + 1]) {
+                        index = ind;
+                    }
+                }
+            })
+        }
+
+        return segmentNumber + index;
+    }
+
+    const getGraphHeight = (maxHeightPercentage: number, scaleDownPrecentage: number): string => {
+        return `${maxHeightPercentage - maxHeightPercentage * (OPTIONS.visibleSegmentNum * (scaleDownPrecentage / 100))}%`
+    }
 
 	const _mtGraphScroll = useRef<ScrollView>(null);
 
@@ -146,6 +174,8 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 	const onScrollRelease = (
 		event: NativeSyntheticEvent<NativeScrollEvent>
 	): void => {
+        // console.log(getSelectedOffset(event.nativeEvent.contentOffset.x, OFFSETS, OPTIONS.visibleSegmentNum))
+        // console.log(OFFSETS);
 		const offsetX = event.nativeEvent.contentOffset.x;
         const segmentMargin = wp(`${100 / OPTIONS.visibleSegmentNum}%`) / 2;
         
@@ -165,11 +195,9 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 		const logIndex =
 			OFFSETS.indexOf(!!log ? log : 0) +
             Math.floor(OPTIONS.visibleSegmentNum / 2);
-
-            
 	};
 
-	let points: MtGraphPointType[] = [];
+    let points: MtGraphPointType[] = [];
 
 	sessions.forEach((s, index) => {
 		let p: MtGraphPointType[] = [];
@@ -195,7 +223,7 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 		}
 
 		points = [...points, ...p];
-	});
+    });
 
 	return (
 		<MtGraphComponent>
@@ -208,16 +236,30 @@ const MtGraphContainer = (props: PropsWithTheme) => {
                 onMomentumScrollEnd={onScrollRelease}
                 snapToEnd={false}
 			>
-				<MtGraph
-					color="cyan"
-					height={hp('50%')}
-					width={calcMtGraphWidth(
-						OPTIONS.segmentWidth,
-						OPTIONS.visibleSegmentNum,
-						550
-					)}
-					points={points}
-				></MtGraph>
+                {/* <MtGraphDistancer options={OPTIONS}></MtGraphDistancer> */}
+                <MtGraphWrapper>
+                    <MtGraph
+                        color="cyan"
+                        height={hp(getGraphHeight(50, 10))}
+                        width={calcMtGraphWidth(
+                            OPTIONS.segmentWidth,
+                            OPTIONS.visibleSegmentNum,
+                            550
+                        )}
+                        points={points}
+                    ></MtGraph>
+                </MtGraphWrapper>
+                {/* <MtGraphDistancer options={OPTIONS}></MtGraphDistancer> */}
+                <DateIndicatorLine>
+                    {points.map((point, i) => (
+                        <DateIndicator options={OPTIONS}>
+                            <DateIndicatorDay>
+                                <DateIndicatorDaySubtitle>Tue</DateIndicatorDaySubtitle>
+                                <DateIndicatorDayTitle>18</DateIndicatorDayTitle>
+                            </DateIndicatorDay>
+                        </DateIndicator>
+                    ))}
+                </DateIndicatorLine>
 			</ScrollView>
 			<SelectIndicator
 				options={OPTIONS}
@@ -228,20 +270,69 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 };
 
 const MtGraphComponent = styled(View)`
-	position: absolute;
-	top: 0;
-	max-height: ${hp('50%')}px;
-	background-color: red;
+    max-height: ${hp('62%')}px;
+    background-color: ${(props: PropsWithTheme) => props.theme.colors.primary};
+    border: 2.5px solid transparent;
+`;
+
+const MtGraphWrapper = styled(View)`
+    height: ${hp('50%')}px;
+    align-items: flex-end;
+    justify-content: flex-end;
 `;
 
 const SelectIndicator = styled(View)`
-	position: absolute;
+    position: absolute;
+    top: 0;
 	left: ${(props: SelectIndicatorTypes) =>
 		wp(`${(100 - 100 / props.options.visibleSegmentNum) / 2}%`)}px;
 	width: ${(props: SelectIndicatorTypes) =>
 		wp(`${100 / props.options.visibleSegmentNum}%`)}px;
-	height: 100%;
-	border: 2px solid purple;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+`;
+
+const DateIndicatorLine = styled(View)`
+    flex-direction: row;
+    position: absolute;
+    top: 0;
+    height: ${hp('62%')}px;
+    width: 100%;
+`;
+
+const DateIndicator = styled(View)`
+    width: ${(props: SelectIndicatorTypes) =>
+        wp(`${100 / props.options.visibleSegmentNum}%`)}px;
+    height: 100%;
+    border-right-width: 0.5px;
+    border-right-color: rgba(255, 255, 255, 0.2);
+    border-left-width: 0.5px;
+    border-left-color: rgba(255, 255, 255, 0.2);
+    justify-content: flex-end;
+`;
+
+const DateIndicatorDay = styled(View)`
+    width: 100%;
+    height: ${hp('12%')}px;
+    background-color: blue;
+    align-items: center;
+    justify-content: center;
+`;
+
+const DateIndicatorDayTitle = styled(Text)`
+    color: white;
+    ${(props) => props.theme.fonts.size.alpha};
+`;
+
+const DateIndicatorDaySubtitle = styled(Text)`
+    color: white;
+    ${(props) => props.theme.fonts.size.gamma};
+`;
+
+const MtGraphDistancer = styled(View)`
+    width: ${(props: SelectIndicatorTypes) =>
+        wp(`${100 / Math.floor(props.options.visibleSegmentNum / 2)}%`)}px;
+    height: 100%;
 `;
 
 export default withTheme(MtGraphContainer);
