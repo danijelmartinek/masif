@@ -1,10 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
-type IconProps = React.SVGProps<SVGSVGElement> & {
-    size: number;
-    color: string;
-};
+import { IconProps } from './../types';
 
 const FlameIcon = (props: IconProps) => {
   return (

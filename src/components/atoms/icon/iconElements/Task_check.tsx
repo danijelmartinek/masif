@@ -1,11 +1,7 @@
 import * as React from "react";
 import Svg, { Circle, Path } from "react-native-svg";
 
-type IconProps = React.SVGProps<SVGSVGElement> & {
-    size: number;
-    color: string;
-    opacity: number;
-};
+import { IconProps } from './../types';
 
 const TasksCheckIcon = (props: IconProps) => {
   return (

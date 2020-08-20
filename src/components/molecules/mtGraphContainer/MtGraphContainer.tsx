@@ -252,7 +252,7 @@ const MtGraphContainer = (props: PropsWithTheme) => {
                 {/* <MtGraphDistancer options={OPTIONS}></MtGraphDistancer> */}
                 <DateIndicatorLine>
                     {points.map((point, i) => (
-                        <DateIndicator options={OPTIONS}>
+                        <DateIndicator options={OPTIONS} key={i}>
                             <DateIndicatorDay>
                                 <DateIndicatorDaySubtitle>Tue</DateIndicatorDaySubtitle>
                                 <DateIndicatorDayTitle>18</DateIndicatorDayTitle>

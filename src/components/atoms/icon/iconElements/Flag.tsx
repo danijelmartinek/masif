@@ -1,12 +1,7 @@
 import * as React from 'react';
 import Svg, { Path, Text } from 'react-native-svg';
 
-type IconProps = React.SVGProps<SVGSVGElement> & {
-    size: number;
-	flagColor: string;
-    textColor: string;
-    text: string;
-};
+import { IconProps } from './../types';
 
 const FlagIcon = (props: IconProps) => {
 	return (
@@ -17,7 +12,7 @@ const FlagIcon = (props: IconProps) => {
 				fontSize="150%"
 				fontWeight="bold"
 				x="50%"
-				y="40%"
+				y="38%"
 				textAnchor="middle"
 			>
 				{props.text}

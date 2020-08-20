@@ -3,11 +3,8 @@ import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme } from '/redux/actions';
-import Hiking from '/components/atoms/icons/Hiking.tsx';
-import Camp_tent from '/components/atoms/icons/Camp_tent.tsx';
-import Flag from '/components/atoms/icons/Flag.tsx';
-import TaskCheck from '/components/atoms/icons/Task_check.tsx';
-import Flame from '/components/atoms/icons/Flame.tsx';
+
+import Icon from '/components/atoms/icon/';
 
 import Constants from 'expo-constants';
 
@@ -43,7 +40,8 @@ const MainScreen = (props: PropsWithTheme) => {
             props.setTheme(ThemeMode.DARK);
         }
 
-    }
+    }     
+
 	return (
 		<View
 			style={{
@@ -59,9 +57,9 @@ const MainScreen = (props: PropsWithTheme) => {
 			{/* <Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text>
             <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button> */}
             <ActionsContainer>
-                <MtButton icon={Camp_tent} activeOpacity={1} active={false} title="Stop"></MtButton>
-                <MtButton icon={Hiking} activeOpacity={1} active={false} title="Stop"></MtButton>
-                <MtButton icon={Camp_tent} activeOpacity={1} active={false} title="Stop"></MtButton>
+                <MtButton icon={'camp_tent'} activeOpacity={0.5} active={false} title="Stop"></MtButton>
+                <MtButton icon={'hiking'} activeOpacity={0.5} active={false} title="Start"></MtButton>
+                <MtButton icon={'camp_fire'} activeOpacity={0.5} active={false} title="Pause"></MtButton>
             </ActionsContainer>
             <TasksContainer>
                 <TasksHeader>
@@ -70,7 +68,8 @@ const MainScreen = (props: PropsWithTheme) => {
                 <ScrollView>
                     <TaskItem>
                         <TaskItemFlag>
-                            <Flag flagColor="orange" text="" size={hp('3%')}></Flag>
+                            {/* <Flag flagColor="orange" text="" size={hp('3%')}></Flag> */}
+                            <Icon type={'flag'} flagColor="orange" text="55" size={hp('3%')}></Icon>
                         </TaskItemFlag>
                         <TaskItemTextWrapper>
                             <TaskItemText numberOfLines={1}>
@@ -78,13 +77,13 @@ const MainScreen = (props: PropsWithTheme) => {
                             </TaskItemText>
                         </TaskItemTextWrapper>
                         <TaskItemInfo>
-                            <Flame color="#ffffff" size={hp('2%')}></Flame>
+                            <Icon type={'flame'} color="orange" size={hp('2%')}></Icon>
                             <PriorityText color={'red'}>High</PriorityText>
                         </TaskItemInfo>
                     </TaskItem>
                     <TaskItem>
                         <TaskItemFlag>
-                            <TaskCheck size={hp('3%')} opacity={0.5}></TaskCheck>
+                            <Icon type={'task_check'} size={hp('3%')} color={'#ffffff'} opacity={0.5}></Icon>
                         </TaskItemFlag>
                         <TaskItemTextWrapper>
                             <TaskItemText numberOfLines={1}>
@@ -92,52 +91,11 @@ const MainScreen = (props: PropsWithTheme) => {
                             </TaskItemText>
                         </TaskItemTextWrapper>
                         <TaskItemInfo>
-                            <Flame color="#ffffff" size={hp('2%')}></Flame>
+                        <Icon type={'flame'} color="orange" size={hp('2%')}></Icon>
                             <PriorityText color={'yellow'}>Medium</PriorityText>
                         </TaskItemInfo>
                     </TaskItem>
-                    <TaskItem>
-                        <TaskItemFlag>
-                            <Flag flagColor="orange" text="" size={hp('3%')}></Flag>
-                        </TaskItemFlag>
-                        <TaskItemTextWrapper>
-                            <TaskItemText numberOfLines={1}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            </TaskItemText>
-                        </TaskItemTextWrapper>
-                        <TaskItemInfo>
-                            <Flame color="#ffffff" size={hp('2%')}></Flame>
-                            <PriorityText color={'green'}>Low</PriorityText>
-                        </TaskItemInfo>
-                    </TaskItem>
-                    <TaskItem>
-                        <TaskItemFlag>
-                            <Flag flagColor="orange" text="" size={hp('3%')}></Flag>
-                        </TaskItemFlag>
-                        <TaskItemTextWrapper>
-                            <TaskItemText numberOfLines={1}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            </TaskItemText>
-                        </TaskItemTextWrapper>
-                        <TaskItemInfo>
-                            <Flame color="#ffffff" size={hp('2%')}></Flame>
-                            <PriorityText color={'green'}>Low</PriorityText>
-                        </TaskItemInfo>
-                    </TaskItem>
-                    <TaskItem>
-                        <TaskItemFlag>
-                            <Flag flagColor="orange" text="" size={hp('3%')}></Flag>
-                        </TaskItemFlag>
-                        <TaskItemTextWrapper>
-                            <TaskItemText numberOfLines={1}>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            </TaskItemText>
-                        </TaskItemTextWrapper>
-                        <TaskItemInfo>
-                            <Flame color="#ffffff" size={hp('2%')}></Flame>
-                            <PriorityText color={'green'}>Low</PriorityText>
-                        </TaskItemInfo>
-                    </TaskItem>
+                    
                     <TasksItemDistancer height={hp('5%')}></TasksItemDistancer>
                 </ScrollView>
             </TasksContainer>
@@ -170,7 +128,7 @@ const TasksHeader = styled(View)`
     flex-direction: row;
     align-items: center;
     width: ${wp('100%')}px;
-    height: ${hp('3%') + Constants.statusBarHeight}px;
+    height: ${hp('5%')}px;
 `;
 
 const TasksTitle = styled(Text)`
@@ -187,7 +145,7 @@ const TaskItem = styled(View)`
 `;
 
 const TaskItemFlag = styled(View)`
-    flex: 1;
+    flex: 1.5;
     align-items: center;
     justify-content: center;
     height: 100%;

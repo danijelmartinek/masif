@@ -1,8 +1,9 @@
-import React from 'react';
+import React,{ FunctionComponent }  from 'react';
 import { View, Button, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
+import Icon from '/components/atoms/icon/';
 
 import {
 	widthPercentageToDP as wp,
@@ -21,7 +22,8 @@ type Props = {
     activeOpacity: number;
 }
 type PropsWithTheme = Props & {
-	theme: SelectedTheme;
+    theme: SelectedTheme;
+    icon: FunctionComponent;
 };
 
 //---- component
@@ -37,7 +39,7 @@ const MtButton = (props: PropsWithTheme) => {
                 backgroundColor={props.backgroundColor}
                 activeBackgroundColor={props.activeBackgroundColor}
             >
-                <props.icon color={(active ? props.activeTextColor : props.textColor)}></props.icon>
+                <Icon type={props.icon} color={(active ? props.activeTextColor : props.textColor)}></Icon>
                 <MtButtonText
                     textColor={props.textColor}
                     activeTextColor={props.activeTextColor}
@@ -56,7 +58,7 @@ MtButton.defaultProps = {
     textColor: '#ffffff',
     activeTextColor: '#000000',
     activeOpacity: 1,
-    icon: View
+    icon: ''
 }
 
 //---- styles
@@ -73,7 +75,7 @@ const MtButtonWrapper = styled(View)`
 `;
 
 const MtButtonText = styled(Text)`
-    padding-left: 10px;
+    padding-left: ${wp('0.5%')}px;
     color: ${(props) =>
         active ? props.activeTextColor : props.textColor};
     ${(props) => props.theme.fonts.size.gamma};
