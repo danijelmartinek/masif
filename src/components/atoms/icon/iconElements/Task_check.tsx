@@ -5,7 +5,7 @@ import { IconProps } from './../types';
 
 const TasksCheckIcon = (props: IconProps) => {
   return (
-    <Svg {...props} width={props.size} height={props.size} viewBox="0 0 23 23" fill="none">
+    <Svg width={props.size} height={props.size} viewBox="0 0 23 23" fill="none">
       <Circle opacity={props.opacity} cx={11.5} cy={11.5} r={11.5} fill={props.color} />
       <Path d="M6 11.4l4.098 3.6L17 6" stroke={props.color} strokeWidth={2} />
     </Svg>

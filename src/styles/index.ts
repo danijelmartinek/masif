@@ -131,7 +131,7 @@ let Theme: ThemeType = {
                 font-size: ${hp('2.8%')}px;
                 line-height: ${hp('4.2%')}px;
             `, //+.6
-            gama: `
+            gamma: `
                 font-size: ${hp('2.2%')}px;
                 line-height: ${hp('3.3%')}px;
             `, //+.4

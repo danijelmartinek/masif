@@ -5,7 +5,7 @@ import { IconProps } from './../types';
 
 const FlagIcon = (props: IconProps) => {
 	return (
-		<Svg {...props} width={props.size} height={props.size} viewBox="0 0 50 50" fill="none">
+		<Svg width={props.size} height={props.size} viewBox="0 0 50 50" fill="none">
 			<Path fill={props.flagColor} d="M45 0h5v50h-5zM0 0h45v25H0z" />
 			<Text
 				fill={props.textColor}

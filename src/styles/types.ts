@@ -62,7 +62,7 @@ interface ThemeBasicsType {
             kilo: string;
             alpha: string;
             beta: string;
-            gama: string;
+            gamma: string;
             delta: string;
             epsilon: string;
             zeta:  string;
