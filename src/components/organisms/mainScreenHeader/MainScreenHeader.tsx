@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import Spacer from '/components/atoms/spacer/';
 import TimeCounter from '/components/molecules/timeCounter/';
 import Icon from '/components/atoms/icon/';
+import Badge from '../../atoms/mtBadge';
 
 //---- types
 
@@ -30,7 +31,8 @@ const MainScreenHeader = (props: PropsWithTheme) => {
                 <TimeCounter></TimeCounter>
                 <MenuButtonsWrapper>
                     <MenuButton>
-                        <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon>
+                        {/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
+                        <Badge icon={'camp_fire'} size={48}></Badge>
                     </MenuButton>
                     <MenuButton>
                         <Icon type={'hamburger'} color={'white'} size={hp('6%')}></Icon>
