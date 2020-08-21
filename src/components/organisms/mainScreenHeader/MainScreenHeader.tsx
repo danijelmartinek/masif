@@ -3,6 +3,9 @@ import { View, TouchableOpacity } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
 
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '/screens/index';
+
 import Spacer from '/components/atoms/spacer/';
 import TimeCounter from '/components/molecules/timeCounter/';
 import Icon from '/components/atoms/icon/';
@@ -17,8 +20,8 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
-type PropsWithTheme = {
-	theme: SelectedTheme;
+type PropsWithTheme = StackScreenProps<RootStackParamList, 'Main'> & {
+    theme: SelectedTheme;
 };
 
 //---- component
@@ -30,7 +33,7 @@ const MainScreenHeader = (props: PropsWithTheme) => {
             <HeaderWrapper>
                 <TimeCounter></TimeCounter>
                 <MenuButtonsWrapper>
-                    <MenuButton>
+                    <MenuButton onPress={() => props.navigation.navigate('Project')}>
                         {/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
                         <Badge icon={'camp_fire'} size={48}></Badge>
                     </MenuButton>

@@ -1,11 +1,12 @@
 import MainScreen from "./Main";
+import ProjectScreen from "./Project";
 
 export type RootStackParamList = {
-    Main: {
-        userId: string
-    };
+    Main: {},
+    Project: {}
 };
 
 export {
-    MainScreen
+    MainScreen,
+    ProjectScreen
 }

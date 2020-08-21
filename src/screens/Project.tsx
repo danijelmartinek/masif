@@ -4,15 +4,10 @@ import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme } from '/redux/actions';
 
-import MainScreenTaskList from '/components/organisms/mainScreenTaskList/';
-import MainScreenActions from '/components/organisms/mainScreenActions/';
-import MainScreenHeader from '/components/organisms/mainScreenHeader/'
-
-
-import MtGraphContainer from '/components/molecules/mtGraphContainer/';
-
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
+
+import Sheet from './Sheet';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
 import {
@@ -55,7 +50,9 @@ const MainScreen = (props: PropsWithTheme) => {
 	return (
 		<View
 			style={{
-				flex: 1,
+                flex: 1,
+                width: '100%',
+                height: '100%',
 				alignItems: 'center',
 				justifyContent: 'center',
 				backgroundColor: props.theme.colors.primary,
@@ -67,13 +64,8 @@ const MainScreen = (props: PropsWithTheme) => {
 				backgroundColor="transparent"
 				barStyle={statusBarTheme}
 			/>
-            <MainScreenHeader navigation={props.navigation} route={props.route}></MainScreenHeader>
-			<MtGraphContainer></MtGraphContainer>
-			{/* <Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text> */}
-			{/* <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button> */}
-            
-            <MainScreenActions></MainScreenActions>
-            <MainScreenTaskList></MainScreenTaskList>
+            <Sheet></Sheet>
+            <Text>Project Page</Text>
 		</View>
 	);
 };
