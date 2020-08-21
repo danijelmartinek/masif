@@ -4,6 +4,7 @@ import { IconProps } from './types';
 
 //---- listed icons
 
+import Hamburger from './iconElements/Hamburger';
 import Hiking from './iconElements/Hiking';
 import CampTent from './iconElements/Camp_tent';
 import CampFire from './iconElements/Camp_fire';
@@ -20,6 +21,7 @@ type IconListType = {
 //---- icons object
 
 const IconList: IconListType = {
+    hamburger: Hamburger,
 	hiking: Hiking,
 	camp_tent: CampTent,
 	camp_fire: CampFire,

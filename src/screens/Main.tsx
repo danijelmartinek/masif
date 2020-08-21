@@ -4,8 +4,9 @@ import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme } from '/redux/actions';
 
-import MainScreenTaskList from '/components/organisms/mainScreenTaskList/'
-import MainScreenActions from '/components/organisms/mainScreenActions/'
+import MainScreenTaskList from '/components/organisms/mainScreenTaskList/';
+import MainScreenActions from '/components/organisms/mainScreenActions/';
+import MainScreenHeader from '/components/organisms/mainScreenHeader/'
 
 
 import MtGraphContainer from '/components/molecules/mtGraphContainer/';
@@ -66,6 +67,7 @@ const MainScreen = (props: PropsWithTheme) => {
 				backgroundColor="transparent"
 				barStyle={statusBarTheme}
 			/>
+            <MainScreenHeader></MainScreenHeader>
 			<MtGraphContainer></MtGraphContainer>
 			{/* <Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text> */}
 			{/* <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button> */}

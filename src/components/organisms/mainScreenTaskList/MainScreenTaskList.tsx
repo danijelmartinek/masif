@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
 
+import Spacer from '/components/atoms/spacer/';
 import TaskItem from '/components/molecules/taskItem/';
 
 import {
@@ -12,10 +13,15 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
+import { PriorityVariants } from '/components/molecules/taskItem/'
+
+//---- types
+
 type PropsWithTheme = {
 	theme: SelectedTheme;
-	checked: boolean;
 };
+
+//---- component
 
 const MainScreenTaskList = (props: PropsWithTheme) => {
 	return (
@@ -28,35 +34,53 @@ const MainScreenTaskList = (props: PropsWithTheme) => {
 					text={
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 					}
-					priority={'low'}
+					priority={PriorityVariants['low']}
 					checked={true}
 				></TaskItem>
 				<TaskItem
 					text={'Etiam efficitur dui eget.'}
-					priority={'high'}
+					priority={PriorityVariants['medium']}
 					checked={false}
 				></TaskItem>
 				<TaskItem
 					text={
 						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
 					}
-					priority={'medium'}
+					priority={PriorityVariants['low']}
 					checked={false}
 				></TaskItem>
-				<TasksItemDistancer height={hp('5%')}></TasksItemDistancer>
+                <TaskItem
+					text={
+						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
+					}
+					priority={PriorityVariants['high']}
+					checked={true}
+				></TaskItem>
+                <TaskItem
+					text={
+						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
+					}
+					priority={PriorityVariants['low']}
+					checked={false}
+				></TaskItem>
+                <TaskItem
+					text={
+						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
+					}
+					priority={PriorityVariants['low']}
+					checked={false}
+				></TaskItem>
+                <Spacer height={hp('3%')} width={wp('100%')}></Spacer>
 			</ScrollView>
 		</TasksContainer>
 	);
 };
 
+//---- styles
+
 const TasksContainer = styled(View)`
 	width: ${wp('100%')}px;
-	height: ${hp('30%') + Constants.statusBarHeight}px;
-`;
-
-const TasksItemDistancer = styled(View)`
-	width: ${wp('100%')}px;
-	height: ${(props) => props.height}px;
+	height: ${hp('25%') + Constants.statusBarHeight}px;
 `;
 
 const TasksHeader = styled(View)`
@@ -71,5 +95,7 @@ const TasksTitle = styled(Text)`
 	color: ${(props: PropsWithTheme) => props.theme.colors.textPrimary};
 	${(props) => props.theme.fonts.size.beta};
 `;
+
+//----
 
 export default withTheme(MainScreenTaskList);

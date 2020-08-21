@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 type Props = {
     textColor: string;
-    textSize: string;
+    textSize: number;
     padding: number;
     text: string;
 };
@@ -47,7 +47,7 @@ const TaskItemTextElem = styled(Text)<{
 }>`
     padding: ${(props) => props.padding}px;
     font-weight: bold;
-    ${(props) => props.size};
+    font-size: ${(props) => props.size}px;
     color: ${(props) => props.color};
 `;
 

@@ -43,7 +43,7 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 	};
 
 	const OPTIONS: MtGraphOptionsType = {
-		visibleSegmentNum: 3,
+		visibleSegmentNum: 5,
 		segmentWidth: 50
 	};
 
@@ -270,7 +270,7 @@ const MtGraphContainer = (props: PropsWithTheme) => {
 };
 
 const MtGraphComponent = styled(View)`
-    max-height: ${hp('62%')}px;
+    max-height: ${hp('65%')}px;
     background-color: ${(props: PropsWithTheme) => props.theme.colors.primary};
     border: 2.5px solid transparent;
 `;
@@ -283,20 +283,22 @@ const MtGraphWrapper = styled(View)`
 
 const SelectIndicator = styled(View)`
     position: absolute;
-    top: 0;
+    top: ${hp('50.5%')}px;
 	left: ${(props: SelectIndicatorTypes) =>
 		wp(`${(100 - 100 / props.options.visibleSegmentNum) / 2}%`)}px;
 	width: ${(props: SelectIndicatorTypes) =>
 		wp(`${100 / props.options.visibleSegmentNum}%`)}px;
-    height: 100%;
+    height: ${hp('13.5%')}px;
     background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid red;
+    border-radius: 10px;
 `;
 
 const DateIndicatorLine = styled(View)`
     flex-direction: row;
     position: absolute;
     top: 0;
-    height: ${hp('62%')}px;
+    height: ${hp('65%')}px;
     width: 100%;
 `;
 
@@ -313,7 +315,7 @@ const DateIndicator = styled(View)`
 
 const DateIndicatorDay = styled(View)`
     width: 100%;
-    height: ${hp('12%')}px;
+    height: ${hp('15%')}px;
     background-color: blue;
     align-items: center;
     justify-content: center;
@@ -329,10 +331,10 @@ const DateIndicatorDaySubtitle = styled(Text)`
     ${(props) => props.theme.fonts.size.gamma};
 `;
 
-const MtGraphDistancer = styled(View)`
-    width: ${(props: SelectIndicatorTypes) =>
-        wp(`${100 / Math.floor(props.options.visibleSegmentNum / 2)}%`)}px;
-    height: 100%;
-`;
+// const MtGraphDistancer = styled(View)`
+//     width: ${(props: SelectIndicatorTypes) =>
+//         wp(`${100 / Math.floor(props.options.visibleSegmentNum / 2)}%`)}px;
+//     height: 100%;
+// `;
 
 export default withTheme(MtGraphContainer);

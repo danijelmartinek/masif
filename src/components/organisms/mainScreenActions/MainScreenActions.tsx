@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import styled, { withTheme } from 'styled-components';
-import Constants from 'expo-constants';
 
 import MtButton from '/components/atoms/mtButton/';
+
+//---- types
 
 import {
 	widthPercentageToDP as wp,
@@ -14,25 +15,29 @@ import { SelectedTheme } from '/styles/types';
 
 type PropsWithTheme = {
 	theme: SelectedTheme;
-	checked: boolean;
 };
+
+//---- component
 
 const MainScreenActions = (props: PropsWithTheme) => {
 	return (
 		<ActionsContainer>
 			<MtButton
+                size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'camp_tent'}
 				activeOpacity={0.5}
 				active={false}
 				title="Stop"
 			></MtButton>
 			<MtButton
+                size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'hiking'}
 				activeOpacity={0.5}
 				active={false}
 				title="Start"
 			></MtButton>
 			<MtButton
+                size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'camp_fire'}
 				activeOpacity={0.5}
 				active={false}
@@ -42,6 +47,8 @@ const MainScreenActions = (props: PropsWithTheme) => {
 	);
 };
 
+//---- styles
+
 const ActionsContainer = styled(View)`
 	width: ${wp('100%')}px;
 	height: ${hp('10%')}px;
@@ -50,5 +57,7 @@ const ActionsContainer = styled(View)`
 	justify-content: space-around;
 	background-color: ${(props) => props.theme.colors.primary};
 `;
+
+//----
 
 export default withTheme(MainScreenActions);

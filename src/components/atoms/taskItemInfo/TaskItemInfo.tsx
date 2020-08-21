@@ -10,7 +10,7 @@ type Props = {
 	iconColor: string;
 	iconSize: number;
 	textColor: string;
-	textSize: string;
+	textSize: number;
 	text: string;
 };
 
@@ -55,13 +55,13 @@ const TaskItemInfoWrapper = styled(View)`
 `;
 
 const PriorityText = styled(Text)<{
-	size: number;
-	iconSize: number;
-	color: string;
+	size: number,
+	iconSize: number,
+	color: string
 }>`
-	${(props) => props.size};
+	font-size: ${(props) => props.size}px;
 	color: ${(props) => props.color};
-	margin-left: ${(props) => props.iconSize * 0.15}px;
+	margin-left: ${(props) => props.size * 0.15}px;
 `;
 
 //----

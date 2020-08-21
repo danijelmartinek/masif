@@ -6,8 +6,6 @@ import TaskFinishedToggle from '/components/atoms/taskFinishedToggle';
 import TaskItemText from '/components/atoms/taskItemText/';
 import TaskItemInfo from '/components/atoms/taskItemInfo/';
 
-//---- types
-
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
@@ -15,10 +13,12 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
-enum PriorityVariants {
-	high = 'high',
-	medium = 'medium',
-	low = 'low'
+//---- types
+
+export enum PriorityVariants {
+	high,
+	medium,
+	low
 }
 
 type PropsWithTheme = {
@@ -43,7 +43,7 @@ const TaskItem = (props: PropsWithTheme) => {
 			<TaskItemText
 				text={props.text}
 				textColor={props.theme.colors.textPrimary}
-				textSize={props.theme.fonts.size.gamma}
+				textSize={props.theme.fonts.oSize.gamma.fontSize}
 				padding={hp('1.5%')}
 			></TaskItemText>
 
@@ -57,7 +57,7 @@ const TaskItem = (props: PropsWithTheme) => {
 						? 'yellow'
 						: 'green'
 				}
-				textSize={props.theme.fonts.size.gamma}
+				textSize={props.theme.fonts.oSize.gamma.fontSize}
 				text={PriorityVariants[props.priority]}
 			></TaskItemInfo>
 		</TaskItemWrapper>
