@@ -4,10 +4,12 @@ import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme } from '/redux/actions';
 
+import Constants from 'expo-constants';
+
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
 
-import Sheet from './Sheet';
+import Sheet from '/components/atoms/bottomSheet/';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
 import {
@@ -45,7 +47,9 @@ const MainScreen = (props: PropsWithTheme) => {
 			props.setTheme(ThemeMode.DARK);
 			setStatusBarTheme('light-content');
 		}
-	};
+    };
+    
+    const sheetRef = React.useRef(null);
 
 	return (
 		<View
@@ -64,7 +68,16 @@ const MainScreen = (props: PropsWithTheme) => {
 				backgroundColor="transparent"
 				barStyle={statusBarTheme}
 			/>
-            <Sheet></Sheet>
+            <Button
+            title="Open Bottom Sheet"
+            onPress={() => sheetRef?.current.snapTo(1)}
+            />
+            <Sheet ref={sheetRef} snapPoints={[0, hp('100%') + Constants.statusBarHeight]}>
+                <ProjectsSheetContainer
+                >
+                    <Text>Swipe down to close</Text>
+                </ProjectsSheetContainer>
+            </Sheet>
             <Text>Project Page</Text>
 		</View>
 	);
@@ -72,6 +85,11 @@ const MainScreen = (props: PropsWithTheme) => {
 
 //---- styles
 
+const ProjectsSheetContainer = styled(View)`
+    height: ${hp('100%') + Constants.statusBarHeight};
+    width: ${wp('100%')};
+    background-color: white;
+`;
 
 //----
 

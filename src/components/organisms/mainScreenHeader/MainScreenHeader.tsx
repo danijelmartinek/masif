@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
 
@@ -10,6 +10,7 @@ import Spacer from '/components/atoms/spacer/';
 import TimeCounter from '/components/molecules/timeCounter/';
 import Icon from '/components/atoms/icon/';
 import Badge from '../../atoms/mtBadge';
+import ProjectSheet from '/components/organisms/projectSheet/';
 
 //---- types
 
@@ -27,13 +28,15 @@ type PropsWithTheme = StackScreenProps<RootStackParamList, 'Main'> & {
 //---- component
 
 const MainScreenHeader = (props: PropsWithTheme) => {
+    const sheetRef = React.useRef(null);
+
 	return (
 		<HeaderContainer>
             <Spacer height={Constants.statusBarHeight} width={wp('100%')}></Spacer>
             <HeaderWrapper>
                 <TimeCounter></TimeCounter>
                 <MenuButtonsWrapper>
-                    <MenuButton onPress={() => props.navigation.navigate('Project')}>
+                    <MenuButton onPress={() => sheetRef?.current.snapTo(1)}>
                         {/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
                         <Badge icon={'camp_fire'} size={48}></Badge>
                     </MenuButton>
@@ -42,6 +45,7 @@ const MainScreenHeader = (props: PropsWithTheme) => {
                     </MenuButton>
                 </MenuButtonsWrapper> 
             </HeaderWrapper>
+            <ProjectSheet ref={sheetRef}></ProjectSheet>
 		</HeaderContainer>
 	);
 };

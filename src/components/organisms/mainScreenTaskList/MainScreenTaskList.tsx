@@ -92,7 +92,7 @@ const TasksHeader = styled(View)`
 
 const TasksTitle = styled(Text)`
 	margin-left: ${wp('2.5%')}px;
-	color: ${(props: PropsWithTheme) => props.theme.colors.textPrimary};
+	color: ${(props) => props.theme.colors.textPrimary};
 	${(props) => props.theme.fonts.size.beta};
 `;
 
