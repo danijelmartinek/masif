@@ -10,6 +10,7 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
+import { hexToRGBA } from '/utils/colorFormat';
 
 import { SelectedTheme } from '/styles/types';
 
@@ -35,7 +36,8 @@ const TaskItem = (props: PropsWithTheme) => {
 		<TaskItemWrapper>
 			<TaskFinishedToggle
 				checked={props.checked}
-				flagColor={'blue'}
+                flagColor={'blue'}
+                borderColor={hexToRGBA(props.theme.colors.textPrimary, 0.5)}
 				taskCheckOpacity={0.5}
 				taskCheckColor={props.theme.colors.textPrimary}
 			></TaskFinishedToggle>

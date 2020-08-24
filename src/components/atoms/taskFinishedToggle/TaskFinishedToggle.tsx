@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import Icon from '/components/atoms/icon/';
 
-import { hexToRGBA } from '/utils/colorFormat';
-
 //---- types
 
 type Props = {
@@ -13,7 +11,8 @@ type Props = {
 	size: number;
 	taskCheckOpacity: number;
 	flagColor: string;
-	taskCheckColor: string;
+    taskCheckColor: string;
+    borderColor: string;
 	text: string;
 };
 
@@ -21,7 +20,7 @@ type Props = {
 
 const TaskFinishedToggle = (props: Props) => {
 	return (
-		<TaskFinishedToggleWrapper borderColor={props.taskCheckColor}>
+		<TaskFinishedToggleWrapper borderColor={props.borderColor}>
 			{props.checked ? (
 				<Icon
 					type={'task_check'}
@@ -48,7 +47,8 @@ TaskFinishedToggle.defaultProps = {
 	size: 25,
 	taskCheckOpacity: 1,
 	flagColor: '#ffffff',
-	taskCheckColor: '#ffffff',
+    taskCheckColor: '#ffffff',
+    borderColor: '#ffffff',
 	text: ''
 };
 
@@ -62,7 +62,7 @@ const TaskFinishedToggleWrapper = styled(View)<{
 	justify-content: center;
 	height: 100%;
 	border-right-width: 1px;
-	border-right-color: ${(props) => hexToRGBA(props.borderColor, 0.5)};
+	border-right-color: ${(props) => props.borderColor};
 `;
 
 //----
