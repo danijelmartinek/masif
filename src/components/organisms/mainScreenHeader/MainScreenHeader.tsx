@@ -21,9 +21,12 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
-type PropsWithTheme = StackScreenProps<RootStackParamList, 'Main'> & {
-    theme: SelectedTheme;
-};
+//---- types
+
+type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type PropsWithTheme = Props & {
+		theme: SelectedTheme;
+	};
 
 //---- component
 
@@ -45,7 +48,7 @@ const MainScreenHeader = (props: PropsWithTheme) => {
                     </MenuButton>
                 </MenuButtonsWrapper> 
             </HeaderWrapper>
-            <ProjectSheet ref={sheetRef}></ProjectSheet>
+            <ProjectSheet ref={sheetRef} navigation={props.navigation} route={props.route}></ProjectSheet>
 		</HeaderContainer>
 	);
 };

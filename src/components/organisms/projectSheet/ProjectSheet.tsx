@@ -7,18 +7,12 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '/screens/index';
 
-import Spacer from '/components/atoms/spacer/';
-import TimeCounter from '/components/molecules/timeCounter/';
-import Icon from '/components/atoms/icon/';
-import Badge from '../../atoms/mtBadge';
-
 import BottomSheet from '/components/atoms/bottomSheet/';
 import BottomSheetType from 'reanimated-bottom-sheet';
 
 import SelectedProjectInfo from '/components/molecules/selectedProjectInfo';
 import ProjectList from '/components/molecules/projectList';
 
-import { hexToRGBA } from '/utils/colorFormat';
 
 //---- types
 
@@ -29,9 +23,10 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
-type PropsWithTheme = StackScreenProps<RootStackParamList, 'Main'> & {
-	theme: SelectedTheme;
-};
+type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type PropsWithTheme = Props & {
+		theme: SelectedTheme;
+	};
 
 //---- component
 
@@ -49,7 +44,7 @@ const ProjectSheet = React.forwardRef<BottomSheetType, PropsWithTheme>(
 				>
 					<ProjectSheetWrapper>
                         <SelectedProjectInfo></SelectedProjectInfo>
-                        <ProjectList></ProjectList>
+                        <ProjectList navigation={props.navigation} route={props.route}></ProjectList>
 					</ProjectSheetWrapper>
 				</BottomSheet>
 			</ProjectSheetContainer>

@@ -20,13 +20,14 @@ type Props = {
 	secondaryText: string;
     badge: [string, string, string];
     activeOpacity: number;
+    onPress: () => void;
 };
 
 //---- component
 
 const ProjectListItem = (props: Props) => {
 	return (
-		<ProjectItem width={props.width} color={props.color} activeOpacity={props.activeOpacity}>
+		<ProjectItem width={props.width} color={props.color} activeOpacity={props.activeOpacity} onPress={props.onPress}>
 			<ProjectBadge>
 				<Badge
 					icon={props.badge[0]}

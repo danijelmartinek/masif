@@ -4,6 +4,9 @@ import styled, { withTheme } from 'styled-components';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '/screens/index';
+
 import Icon from '/components/atoms/icon/';
 import ProjectListItem from '/components/atoms/projectListItem';
 
@@ -17,9 +20,10 @@ import { SelectedTheme } from '/styles/types';
 
 //---- types
 
-type PropsWithTheme = {
-	theme: SelectedTheme;
-};
+type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type PropsWithTheme = Props & {
+		theme: SelectedTheme;
+	};
 
 //---- component
 
@@ -28,7 +32,7 @@ const ProjectList = (props: PropsWithTheme) => {
 		<ProjectListContainer>
 			<ProjectListHeader>
 				<ProjectListTitle>Projects</ProjectListTitle>
-				<ProjectListAdd>
+				<ProjectListAdd onPress={() => props.navigation.navigate('Project')}>
 					<Icon
 						type={'plus'}
 						color={props.theme.colors.textPrimary}

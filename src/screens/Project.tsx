@@ -7,9 +7,9 @@ import { setTheme } from '/redux/actions';
 import Constants from 'expo-constants';
 
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from './index';
+import { RootStackParamList } from '/screens/';
 
-import Sheet from '/components/atoms/bottomSheet/';
+import BasicLayout from '/components/molecules/basicLayout/';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
 import {
@@ -23,7 +23,7 @@ const mapDispatch = {
 const connector = connect(null, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type Props = StackScreenProps<RootStackParamList, 'Project'>;
 type PropsWithTheme = Props &
 	PropsFromRedux & {
 		theme: SelectedTheme;
@@ -34,7 +34,7 @@ type StatusBarStyleType =
 	| 'default'
 	| undefined;
 
-const MainScreen = (props: PropsWithTheme) => {
+const ProjectScreen = (props: PropsWithTheme) => {
 	const [statusBarTheme, setStatusBarTheme] = useState<StatusBarStyleType>(
 		'light-content'
 	);
@@ -47,16 +47,16 @@ const MainScreen = (props: PropsWithTheme) => {
 			props.setTheme(ThemeMode.DARK);
 			setStatusBarTheme('light-content');
 		}
-    };
-    
-    const sheetRef = React.useRef(null);
+	};
+
+	const sheetRef = React.useRef(null);
 
 	return (
 		<View
 			style={{
-                flex: 1,
-                width: '100%',
-                height: '100%',
+				flex: 1,
+				width: '100%',
+				height: '100%',
 				alignItems: 'center',
 				justifyContent: 'center',
 				backgroundColor: props.theme.colors.primary,
@@ -68,17 +68,18 @@ const MainScreen = (props: PropsWithTheme) => {
 				backgroundColor="transparent"
 				barStyle={statusBarTheme}
 			/>
-            <Button
-            title="Open Bottom Sheet"
-            onPress={() => sheetRef?.current.snapTo(1)}
-            />
-            <Sheet ref={sheetRef} snapPoints={[0, hp('100%') + Constants.statusBarHeight]}>
-                <ProjectsSheetContainer
-                >
-                    <Text>Swipe down to close</Text>
-                </ProjectsSheetContainer>
-            </Sheet>
-            <Text>Project Page</Text>
+			<BasicLayout
+				navigation={props.navigation}
+                route={props.route}
+                screenName={'Add Project'}
+                headerActionButton={true}
+                headerActionButtonSettings={['Save', '#ffffff', 'green', 0.5]}
+                headerActionButtonOnPress={() => props.navigation.goBack()}
+			>
+				<Text style={{color: 'white'}}>
+					Add project
+				</Text>
+			</BasicLayout>
 		</View>
 	);
 };
@@ -86,11 +87,11 @@ const MainScreen = (props: PropsWithTheme) => {
 //---- styles
 
 const ProjectsSheetContainer = styled(View)`
-    height: ${hp('100%') + Constants.statusBarHeight};
-    width: ${wp('100%')};
-    background-color: white;
+	height: ${hp('100%') + Constants.statusBarHeight};
+	width: ${wp('100%')};
+	background-color: white;
 `;
 
 //----
 
-export default connector(withTheme(MainScreen));
+export default connector(withTheme(ProjectScreen));
