@@ -11,6 +11,9 @@ import CampFire from './iconElements/Camp_fire';
 import Flame from './iconElements/Flame';
 import Flag from './iconElements/Flag';
 import TaskCheck from './iconElements/Task_check';
+import Close from './iconElements/Close';
+import Edit from './iconElements/Edit';
+import Plus from './iconElements/Plus';
 
 //---- types
 
@@ -27,7 +30,10 @@ const IconList: IconListType = {
 	camp_fire: CampFire,
 	flame: Flame,
 	flag: Flag,
-	task_check: TaskCheck
+    task_check: TaskCheck,
+    close: Close,
+    edit: Edit,
+    plus: Plus
 };
 
 //---- component
