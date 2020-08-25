@@ -32,7 +32,7 @@ const ProjectList = (props: PropsWithTheme) => {
 		<ProjectListContainer>
 			<ProjectListHeader>
 				<ProjectListTitle>Projects</ProjectListTitle>
-				<ProjectListAdd onPress={() => props.navigation.navigate('NewProject')}>
+				<ProjectListAdd onPress={() => props.navigation.navigate('ProjectTasks')}>
 					<Icon
 						type={'plus'}
 						color={props.theme.colors.textPrimary}

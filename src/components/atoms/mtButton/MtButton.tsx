@@ -15,19 +15,22 @@ type Props = {
 	activeBackgroundColor: string;
 	textColor: string;
 	activeTextColor: string;
-	activeOpacity: number;
+    activeOpacity: number;
+    fullWidth: boolean;
+    disabled: boolean;
 };
 
 //---- component
 
 const MtButton = (props: Props) => {
 	return (
-		<TouchableOpacity activeOpacity={props.activeOpacity}>
+		<TouchableOpacity activeOpacity={props.activeOpacity} disabled={props.disabled} style={{opacity: props.disabled ? 0.25 : 1}}>
 			<MtButtonWrapper
                 size={props.size}
 				active={props.active}
-				backgroundColor={props.backgroundColor}
-				activeBackgroundColor={props.activeBackgroundColor}
+				backgroundColor={props.disabled ? 'gray' : props.backgroundColor}
+                activeBackgroundColor={props.disabled ? 'gray' : props.activeBackgroundColor}
+                fullWidth={props.fullWidth}
 			>
 				<Icon
                     type={props.icon}
@@ -58,12 +61,15 @@ MtButton.defaultProps = {
 	textColor: '#ffffff',
 	activeTextColor: '#000000',
 	activeOpacity: 1,
-	icon: ''
+    icon: '',
+    fullWidth: false,
+    disabled: false
 };
 
 //---- styles
 
 const MtButtonWrapper = styled(View)<{
+    fullWidth: boolean,
     size: number,
 	active: boolean,
 	backgroundColor: string,
@@ -73,7 +79,7 @@ const MtButtonWrapper = styled(View)<{
 	align-items: center;
 	justify-content: center;
 	border-radius: 5px;
-    width: ${(props) => props.size * 7.5}px;
+    width: ${(props) => props.fullWidth ? '100%' : props.size * 7.5 + 'px'};
     height: ${(props) => props.size * 2.5}px;
 	background-color: ${(props) =>
 		props.active ? props.activeBackgroundColor : props.backgroundColor};

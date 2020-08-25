@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 
 import TaskFinishedToggle from '/components/atoms/taskFinishedToggle';
@@ -24,17 +24,22 @@ export enum PriorityVariants {
 
 type PropsWithTheme = {
 	theme: SelectedTheme;
-	checked: boolean;
+	checked?: boolean;
 	text: string;
-	priority: PriorityVariants;
+    priority?: PriorityVariants;
+    activeOpacity?: number;
+    onPress?: () => void;
+    onLongPress?: () => void;
+    onCheckPress?: () => void;
 };
 
 //---- component
 
 const TaskItem = (props: PropsWithTheme) => {
 	return (
-		<TaskItemWrapper>
+		<TaskItemWrapper onPress={props.onPress} onLongPress={props.onLongPress} activeOpacity={props.activeOpacity}>
 			<TaskFinishedToggle
+                onPress={props.onCheckPress}
 				checked={props.checked}
                 flagColor={'blue'}
                 borderColor={hexToRGBA(props.theme.colors.textPrimary, 0.5)}
@@ -71,14 +76,18 @@ const TaskItem = (props: PropsWithTheme) => {
 TaskItem.defaultProps = {
 	checked: false,
 	text: '',
-	priority: 'low'
+    priority: 'low',
+    activeOpacity: 1,
+    onPress: undefined,
+    onLongPress: undefined,
+    onCheckPress: undefined
 };
 
 //---- styles
 
-const TaskItemWrapper = styled(View)`
+const TaskItemWrapper = styled(TouchableOpacity)`
 	flex-direction: row;
-	width: ${wp('100%')}px;
+	width: 100%;
 	height: ${hp('5%')}px;
 	margin: ${hp('1%')}px 0px;
 `;

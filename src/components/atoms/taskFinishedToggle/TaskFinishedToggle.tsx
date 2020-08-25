@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
 
 import Icon from '/components/atoms/icon/';
@@ -13,14 +13,15 @@ type Props = {
 	flagColor: string;
     taskCheckColor: string;
     borderColor: string;
-	text: string;
+    text: string;
+    onPress?: () => void;
 };
 
 //---- component
 
 const TaskFinishedToggle = (props: Props) => {
 	return (
-		<TaskFinishedToggleWrapper borderColor={props.borderColor}>
+		<TaskFinishedToggleWrapper borderColor={props.borderColor} activeOpacity={1} onPress={props.onPress}>
 			{props.checked ? (
 				<Icon
 					type={'task_check'}
@@ -49,12 +50,13 @@ TaskFinishedToggle.defaultProps = {
 	flagColor: '#ffffff',
     taskCheckColor: '#ffffff',
     borderColor: '#ffffff',
-	text: ''
+    text: '',
+    onPress: undefined
 };
 
 //---- styles
 
-const TaskFinishedToggleWrapper = styled(View)<{
+const TaskFinishedToggleWrapper = styled(TouchableOpacity)<{
 	borderColor: string;
 }>`
 	flex: 1;
