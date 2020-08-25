@@ -1,5 +1,6 @@
 import React, { FunctionComponentElement, ComponentElement } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TouchableOpacityComponent } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -41,7 +42,7 @@ type PropsWithTheme = Props & {
 
 const BasicLayout = (props: PropsWithTheme) => {
 	return (
-		<LayoutContainer>
+		<LayoutContainer behavior="padding">
 			<Spacer
 				width={wp('100%')}
 				height={Constants.statusBarHeight}
@@ -74,7 +75,13 @@ const BasicLayout = (props: PropsWithTheme) => {
 				</TopBarContainer>
 			) : null}
 			<LayoutContent actionsEnabled={!!props.actions}>
-				<ScrollView>{props.children}</ScrollView>
+				<KeyboardAwareScrollView
+                    enableOnAndroid={true}
+                    enableAutomaticScroll={true}
+                    // extraHeight={hp('25%')}
+                    extraScrollHeight={hp('25%')}
+                    viewIsInsideTabBar={true}
+                >{props.children}</KeyboardAwareScrollView>
 			</LayoutContent>
 			{props.actions ? (
 				<ActionsContainer>
@@ -117,7 +124,8 @@ BasicLayout.defaultProps = {
 
 //---- styles
 
-const LayoutContainer = styled(View)`
+const LayoutContainer = styled(KeyboardAvoidingView)`
+    flex: 1;
 	width: ${wp('100%')}px;
 	height: ${hp('100%')}px;
 `;

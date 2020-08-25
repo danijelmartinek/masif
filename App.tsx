@@ -9,7 +9,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Reducer from '/redux/store';
 
-import { RootStackParamList, MainScreen, ProjectScreen } from '/screens/';
+import { RootStackParamList, MainScreen, NewProjectScreen } from '/screens/';
 import Theme from '/styles/themeComponent/';
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -36,9 +36,9 @@ export default function App() {
 								headerShown: false,
 							}}
 						/>
-						<RootStack.Screen
-							name="Project"
-							component={ProjectScreen}
+                        <RootStack.Screen
+							name="NewProject"
+							component={NewProjectScreen}
 							initialParams={{}}
 							options={{
                                 headerShown: false,
