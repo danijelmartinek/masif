@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
-import { setTheme } from '/redux/actions';
+import { addTask, toggleTaskState } from '/redux/actions';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -22,31 +22,35 @@ import Spacer from '/components/atoms/spacer/';
 import TaskAdd from '/components/organisms/taskAdd/';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
+import { ProjectTaskType } from '/redux/types'
 
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
+import { makeId } from '/utils/helpers';
 
-import { TaskPrioritySelectProps, TaskPriorityType } from '/components/molecules/taskPrioritySelect/index';
+import {
+	TaskPrioritySelectProps,
+	TaskPriorityType
+} from '/components/molecules/taskPrioritySelect/index';
+import { StoreStateType } from '/redux/types';
 
 //---- store
 
+const mapState = (state: StoreStateType) => ({
+	SELECTED_PROJECT: state.SELECTED_PROJECT
+});
 const mapDispatch = {
-	setTheme: (theme: ThemeMode) => setTheme(theme)
+    addTask: (task: ProjectTaskType) => addTask(task),
+    toggleTaskState: (taskId: string) => toggleTaskState(taskId)
 };
-const connector = connect(null, mapDispatch);
+const connector = connect(mapState, mapDispatch);
 
 //---- types
 
-type ProjectTaskType = {
-    text: string;
-    priority: TaskPriorityType;
-    checked: boolean;
-};
-
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type Props = StackScreenProps<RootStackParamList, 'ProjectTasks'>;
 type PropsWithTheme = Props &
 	PropsFromRedux & {
 		theme: SelectedTheme;
@@ -59,27 +63,17 @@ type StatusBarStyleType =
 
 //---- component
 
-const projectTaskList: ProjectTaskType[] = [
-    {
-        text: 'Lorem Ipsum',
-        priority: 'low',
-        checked: false
-    },
-    {
-        text: 'Example Task',
-        priority: 'medium',
-        checked: true
-    },
-    {
-        text: 'Some very long text to test long sentences in task component',
-        priority: 'high',
-        checked: false
-    }
-]
-
 const ProjectTaskScreen = (props: PropsWithTheme) => {
-    const [projectTasks, changeProjectTasks] = React.useState<ProjectTaskType[]>(projectTaskList);
+	const [projectTasks, changeProjectTasks] = React.useState<
+		ProjectTaskType[]
+    >(props.SELECTED_PROJECT.tasks || []);
     
+    React.useEffect(() => {
+        if(props.SELECTED_PROJECT.tasks !== projectTasks) {
+            changeProjectTasks(props.SELECTED_PROJECT.tasks);
+        }
+    })
+
 	const prioritySelectSettings: TaskPrioritySelectProps = {
 		activeOpacity: 0.75,
 		title: 'Select Priority'
@@ -92,26 +86,33 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 			return 'dark-content';
 		}
     });
-    
-    const changeCheckedState = (index: number) => {
-        let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
-        tempProjectTasks[index].checked = !tempProjectTasks[index].checked;
-        
-        changeProjectTasks(tempProjectTasks);
-    }
 
-    const onTaskAdd = (task: {text: string, priority: TaskPriorityType}) => {
-        let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
-        tempProjectTasks.unshift({
-            text: task.text,
-            priority: task.priority,
-            checked: false
-        })
-        
-        changeProjectTasks(tempProjectTasks);
+	const changeCheckedState = (index: number) => {
 
-        return true;
-    }
+        props.toggleTaskState(projectTasks[index]._id);
+
+		let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
+		tempProjectTasks[index].checked = !tempProjectTasks[index].checked;
+
+		changeProjectTasks(tempProjectTasks);
+    };
+
+	const onTaskAdd = (task: { text: string; priority: TaskPriorityType }) => {
+        let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
+        
+		props.addTask({
+            _id: makeId(16),
+			text: task.text,
+			priority: task.priority,
+            checked: false,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+        });
+
+		changeProjectTasks(tempProjectTasks);
+
+		return true;
+	};
 
 	return (
 		<ProjectTaskScreenContainer>
@@ -130,27 +131,27 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 						title={'New Task'}
 						inputLabel={'Task Title'}
 						buttonLabel={'Add'}
-                        prioritySelectOptions={prioritySelectSettings}
-                        onTaskAddOrChange={(task) => onTaskAdd(task)}
+						prioritySelectOptions={prioritySelectSettings}
+						onTaskAddOrChange={(task) => onTaskAdd(task)}
 					></TaskAdd>
 
 					<Spacer width={wp('100%')} height={hp('2.5%')}></Spacer>
 
 					<TaskScreenHeading>Tasks</TaskScreenHeading>
 					<TaskItemList>
-                        {projectTasks.map((task, i) => (
-                            <TaskItem
-                                key={Math.random() * i}
-                                text={task.text}
-                                priority={task.priority}
-                                checked={task.checked}
-                                activeOpacity={0.5}
-                                checkActiveOpacity={0.5}
-                                onPress={() => console.log('press')}
-                                onLongPress={() => console.log('long press')}
-                                onCheckPress={() => changeCheckedState(i)}
-                            ></TaskItem>
-                        ))}
+						{projectTasks.map((task, i) => (
+							<TaskItem
+								key={Math.random() * i}
+								text={task.text}
+								priority={task.priority}
+								checked={task.checked}
+								activeOpacity={0.5}
+								checkActiveOpacity={0.5}
+								onPress={() => console.log('press')}
+								onLongPress={() => console.log('long press')}
+								onCheckPress={() => changeCheckedState(i)}
+							></TaskItem>
+						))}
 					</TaskItemList>
 				</ProjectTaskScreenContent>
 			</BasicLayout>

@@ -25,30 +25,50 @@ import { SelectedTheme } from '/styles/types';
 
 type Props = StackScreenProps<RootStackParamList, 'Main'>;
 type PropsWithTheme = Props & {
-		theme: SelectedTheme;
-	};
+	theme: SelectedTheme;
+};
 
 //---- component
 
 const MainScreenHeader = (props: PropsWithTheme) => {
-    const sheetRef = React.useRef(null);
+	const sheetRef = React.useRef(null);
 
 	return (
 		<HeaderContainer>
-            <Spacer height={Constants.statusBarHeight} width={wp('100%')}></Spacer>
-            <HeaderWrapper>
-                <TimeCounter></TimeCounter>
-                <MenuButtonsWrapper>
-                    <MenuButton onPress={() => sheetRef?.current.snapTo(1)}>
-                        {/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
-                        <Badge icon={'camp_fire'} size={48}></Badge>
-                    </MenuButton>
-                    <MenuButton>
-                        <Icon type={'hamburger'} color={'white'} size={hp('6%')}></Icon>
-                    </MenuButton>
-                </MenuButtonsWrapper> 
-            </HeaderWrapper>
-            <ProjectSheet ref={sheetRef} navigation={props.navigation} route={props.route}></ProjectSheet>
+			<Spacer
+				height={Constants.statusBarHeight}
+				width={wp('100%')}
+			></Spacer>
+			<HeaderWrapper>
+				<TimeCounter></TimeCounter>
+				<MenuButtonsWrapper>
+					<MenuButton onPress={() => sheetRef?.current.snapTo(1)}>
+						{/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
+						<Badge
+							icon={props.theme.project.icon}
+							size={48}
+							primaryColor={
+								props.theme.project.colors.projectPrimary
+							}
+							secondaryColor={
+								props.theme.project.colors.projectSecondary
+							}
+						></Badge>
+					</MenuButton>
+					<MenuButton>
+						<Icon
+							type={'hamburger'}
+							color={props.theme.colors.textPrimary}
+							size={hp('6%')}
+						></Icon>
+					</MenuButton>
+				</MenuButtonsWrapper>
+			</HeaderWrapper>
+			<ProjectSheet
+				ref={sheetRef}
+				navigation={props.navigation}
+				route={props.route}
+			></ProjectSheet>
 		</HeaderContainer>
 	);
 };
@@ -56,25 +76,25 @@ const MainScreenHeader = (props: PropsWithTheme) => {
 //---- styles
 
 const HeaderContainer = styled(View)`
-    position: absolute;
-    z-index: 100;
-    top: 0;
+	position: absolute;
+	z-index: 100;
+	top: 0;
 	width: ${wp('100%')}px;
 	height: ${hp('20%')}px;
 `;
 
 const HeaderWrapper = styled(View)`
-    flex-direction: row;
+	flex-direction: row;
 `;
 
 const MenuButtonsWrapper = styled(View)`
-    width: 50%;
-    flex-direction: row;
-    justify-content: flex-end;
+	width: 50%;
+	flex-direction: row;
+	justify-content: flex-end;
 `;
 
 const MenuButton = styled(TouchableOpacity)`
-    padding: ${hp('1.5%')}px;
+	padding: ${hp('1.5%')}px;
 `;
 
 //----

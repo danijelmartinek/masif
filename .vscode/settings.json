@@ -50,6 +50,6 @@
 	"stylusSupremacy.insertSemicolons": false,
 	"stylusSupremacy.insertBraces": false,
 
-	"prettier.disableLanguages": ["pdf", "hbs", "xlsx"]],
+	"prettier.disableLanguages": ["pdf", "hbs", "xlsx"],
 	"prettier.semi": false
 }

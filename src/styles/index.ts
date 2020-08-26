@@ -54,10 +54,10 @@ let Theme: ThemeType = {
 
     project: {
         colors: {
-            projectPrimary: '',
-            projectSecondary: ''
+            projectPrimary: '#004A8E',
+            projectSecondary: '#FF922E'
         },
-        icon: null
+        icon: 'hiking'
     },
 
     fonts: {

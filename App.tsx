@@ -5,58 +5,71 @@ import {
 	TransitionPresets
 } from '@react-navigation/stack';
 
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Reducer from '/redux/store';
+import configureStore from '/redux/configureStore';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { RootStackParamList, MainScreen, NewProjectScreen, ProjectTaskScreen } from '/screens/';
+import { RootStackParamList, MainScreen, NewProjectScreen, ProjectTaskScreen, ProjectScreen } from '/screens/';
 import Theme from '/styles/themeComponent/';
 
 const RootStack = createStackNavigator<RootStackParamList>();
-const store = createStore(Reducer);
+const { store, persistor } = configureStore();
 
 export default function App() {
 	return (
 		<Provider store={store}>
-			<Theme>
-				<NavigationContainer>
-					<RootStack.Navigator
-                        initialRouteName="Main"
-                        headerMode={'float'}
-						screenOptions={{
-                            gestureEnabled: true,
-                            ...TransitionPresets.SlideFromRightIOS
-						}}
-					>
-						<RootStack.Screen
-							name="Main"
-							component={MainScreen}
-							initialParams={{}}
-							options={{
-								headerShown: false,
-							}}
-						/>
-                        <RootStack.Screen
-							name="NewProject"
-							component={NewProjectScreen}
-							initialParams={{}}
-							options={{
-                                headerShown: false,
-                                gestureDirection: 'horizontal',
-							}}
-						/>
-                        <RootStack.Screen
-							name="ProjectTasks"
-							component={ProjectTaskScreen}
-							initialParams={{}}
-							options={{
-                                headerShown: false,
-                                gestureDirection: 'horizontal',
-							}}
-						/>
-					</RootStack.Navigator>
-				</NavigationContainer>
-			</Theme>
+            <PersistGate loading={null} persistor={persistor}>
+                <Theme>
+                    <NavigationContainer>
+                        <RootStack.Navigator
+                            initialRouteName="Main"
+                            headerMode={'float'}
+                            screenOptions={{
+                                gestureEnabled: true,
+                                ...TransitionPresets.SlideFromRightIOS
+                            }}
+                        >
+                            <RootStack.Screen
+                                name="Main"
+                                component={MainScreen}
+                                initialParams={{}}
+                                options={{
+                                    headerShown: false,
+                                }}
+                            />
+                            <RootStack.Screen
+                                name="NewProject"
+                                component={NewProjectScreen}
+                                initialParams={{}}
+                                options={{
+                                    headerShown: false,
+                                    gestureDirection: 'horizontal',
+                                }}
+                            />
+                            <RootStack.Screen
+                                name="ProjectTasks"
+                                component={ProjectTaskScreen}
+                                initialParams={{
+                                    projectId: ''
+                                }}
+                                options={{
+                                    headerShown: false,
+                                    gestureDirection: 'horizontal',
+                                }}
+                            />
+                            <RootStack.Screen
+                                name="Project"
+                                component={ProjectScreen}
+                                initialParams={{}}
+                                options={{
+                                    headerShown: false,
+                                    gestureDirection: 'horizontal',
+                                }}
+                            />
+                        </RootStack.Navigator>
+                    </NavigationContainer>
+                </Theme>
+            </PersistGate>
 		</Provider>
 	);
 }

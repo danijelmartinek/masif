@@ -27,12 +27,12 @@ interface ThemeOption {
     }
 }
 
-interface ProjectThemeOptions {
+export interface ProjectThemeOptionsType {
     colors: {
         projectPrimary: string;
         projectSecondary: string;
     },
-    icon: string | null;
+    icon: string;
 }
 
 interface ThemeBasicsType {
@@ -80,11 +80,11 @@ interface ThemeBasicsType {
 export interface ThemeType extends ThemeBasicsType {
     light: ThemeOption;
     dark: ThemeOption;
-    project: ProjectThemeOptions;
+    project: ProjectThemeOptionsType;
 }
 
 export interface SelectedTheme extends ThemeOption, ThemeBasicsType {
-    project: ProjectThemeOptions;
+    project: ProjectThemeOptionsType;
 }
 
 export enum ThemeMode {

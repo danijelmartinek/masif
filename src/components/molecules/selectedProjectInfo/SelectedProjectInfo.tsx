@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { connect, ConnectedProps } from 'react-redux';
 import styled, { withTheme } from 'styled-components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
+import moment from 'moment';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '/screens/index';
 
 import Spacer from '/components/atoms/spacer/';
 import Icon from '/components/atoms/icon/';
@@ -15,16 +20,63 @@ import {
 import { hexToRGBA } from '/utils/colorFormat';
 
 import { SelectedTheme } from '/styles/types';
+import { StoreStateType, ProjectType } from '/redux/types';
+import { selectProject, setProjectTheme } from '/redux/actions';
+
+//---- store
+
+const mapDispatch = {
+	selectProject: (index: number) => selectProject(index),
+	setProjectTheme: () => setProjectTheme()
+};
+const mapState = (state: StoreStateType) => ({
+	SELECTED_PROJECT: state.SELECTED_PROJECT
+});
+const connector = connect(mapState, mapDispatch);
 
 //---- types
 
-type PropsWithTheme = {
-	theme: SelectedTheme;
-};
-
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type PropsWithTheme = Props &
+	PropsFromRedux & {
+		theme: SelectedTheme;
+		onCloseButtonPress?: () => void;
+	};
 //---- component
 
 const SelectedProjectInfo = (props: PropsWithTheme) => {
+	const getDurationSum = (): string => {
+		if (props.SELECTED_PROJECT.activities[0]) {
+			return `Ø`;
+		} else {
+			return `Ø`;
+		}
+	};
+
+	const getStartDate = (): string => {
+		if (props.SELECTED_PROJECT.activities[0]) {
+			return moment(
+				props.SELECTED_PROJECT.activities[0].startTime
+			).format('DD/MM/YYYY');
+		} else {
+			return `Ø`;
+		}
+	};
+
+	const getTasksCount = (): string => {
+		if (props.SELECTED_PROJECT.tasks[0]) {
+			const taskCount: number = props.SELECTED_PROJECT.tasks.length;
+			const checkedTasks: number = props.SELECTED_PROJECT.tasks.filter(
+				(task) => task.checked === true
+			).length;
+
+			return `${checkedTasks} / ${taskCount}`;
+		} else {
+			return `Ø`;
+		}
+	};
+
 	return (
 		<SelectedProjectInfoContainer>
 			<Spacer
@@ -32,31 +84,53 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 				width={wp('100%')}
 			></Spacer>
 			<SelectedProjectBadge>
-				<Badge icon={'hiking'} size={hp('10%')}></Badge>
+				<Badge
+					icon={props.theme.project.icon}
+					size={hp('10%')}
+					primaryColor={props.theme.colors.textPrimary}
+					secondaryColor={props.theme.project.colors.projectSecondary}
+					iconColor={props.theme.project.colors.projectPrimary}
+				></Badge>
 			</SelectedProjectBadge>
 			<SelectedProjectName>Lorem ipsum</SelectedProjectName>
 			<SelectedProjectDetails>
 				<SelectedProjectDetailsItem>
 					<DetailHeading>Start Date</DetailHeading>
-					<DetailInfo>19 / 03 / 2020</DetailInfo>
+					<DetailInfo>{getStartDate()}</DetailInfo>
 				</SelectedProjectDetailsItem>
 				<SelectedProjectDetailsItem>
-					<DetailHeading>Start Date</DetailHeading>
-					<DetailInfo>19 / 03 / 2020</DetailInfo>
+					<DetailHeading>Duration</DetailHeading>
+					<DetailInfo>{getDurationSum()}</DetailInfo>
 				</SelectedProjectDetailsItem>
 				<SelectedProjectDetailsItem>
-					<DetailHeading>Start Date</DetailHeading>
-					<DetailInfo>19 / 03 / 2020</DetailInfo>
+					<DetailHeading>Tasks</DetailHeading>
+					<DetailInfo>{getTasksCount()}</DetailInfo>
 				</SelectedProjectDetailsItem>
 			</SelectedProjectDetails>
 			<ProjectSheetActionIcons>
-				<ActionIcon1Wrapper>
-					<Icon
-						type={'edit'}
-						color={props.theme.colors.textPrimary}
-					></Icon>
-				</ActionIcon1Wrapper>
-				<ActionIcon2Wrapper>
+				{props.SELECTED_PROJECT._id ? (
+					<ActionIcon1Wrapper
+						onPress={() =>
+							props.navigation.navigate('ProjectTasks', {
+								projectId: props.SELECTED_PROJECT._id
+							})
+						}
+					>
+						<Icon
+							type={'edit'}
+							color={props.theme.colors.textPrimary}
+						></Icon>
+					</ActionIcon1Wrapper>
+				) : (
+					<ActionIcon1Wrapper></ActionIcon1Wrapper>
+				)}
+				<ActionIcon2Wrapper
+					onPress={() =>
+						props.onCloseButtonPress
+							? props.onCloseButtonPress()
+							: null
+					}
+				>
 					<Icon
 						type={'close'}
 						color={props.theme.colors.textPrimary}
@@ -72,11 +146,13 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 //---- styles
 
 const SelectedProjectInfoContainer = styled(View)`
-    align-items: center;
+	align-items: center;
 	justify-content: center;
 	width: ${wp('100%')}px;
 	height: ${hp('40%')}px;
-	background-color: blue;
+    background-color: ${(props) => props.theme.project.colors.projectPrimary}
+    border-bottom-left-radius: ${hp('2%')}px;
+    border-bottom-right-radius: ${hp('2%')}px;
 `;
 
 const SelectedProjectBadge = styled(View)`
@@ -139,4 +215,4 @@ const ActionIcon2Wrapper = styled(TouchableOpacity)`
 `;
 //----
 
-export default withTheme(SelectedProjectInfo);
+export default connector(withTheme(SelectedProjectInfo));

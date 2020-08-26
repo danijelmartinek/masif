@@ -245,3 +245,53 @@
 // //----
 
 // export default connector(withTheme(ProjectScreen));
+
+
+import React, {useState} from 'react';
+import {TouchableOpacity, Button, Text, View} from 'react-native';
+import Modal from 'react-native-modal';
+import Constants from 'expo-constants';
+
+import {
+	widthPercentageToDP as wp,
+	heightPercentageToDP as hp
+} from '/utils/dimensions';
+
+const deviceWidth = wp('100%');
+const deviceHeight = hp('100%');
+
+
+function ModalTester() {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+    return (
+      <View style={{margin: 0, flex: 1, height: '100%', alignItems: 'center', justifyContent: 'center'}}>
+        <Button title="Show modal" onPress={toggleModal} />
+
+        <Modal 
+        style={{flex: 1, height: '100%', alignItems: 'center', justifyContent: 'flex-end'}}
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+        onBackButtonPress={() => setModalVisible(false)}
+        deviceWidth={deviceWidth}
+        deviceHeight={deviceHeight}
+        useNativeDriver={false}
+        hideModalContentWhileAnimating={true}
+        onSwipeComplete={() => setModalVisible(false)}
+        swipeDirection={['down']}
+      >
+          <View style={{margin: 0, marginBottom: -Constants.statusBarHeight, alignItems: 'center', justifyContent: 'center', width: wp('100%'), height: hp('30%'), backgroundColor: 'red'}}>
+            <Text>Hello!</Text>
+
+            <Button title="Hide modal" onPress={toggleModal} />
+          </View>
+        </Modal>
+      </View>
+    );
+}
+
+export default ModalTester;

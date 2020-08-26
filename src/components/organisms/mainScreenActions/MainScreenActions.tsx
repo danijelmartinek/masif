@@ -27,21 +27,33 @@ const MainScreenActions = (props: PropsWithTheme) => {
 				icon={'camp_tent'}
 				activeOpacity={0.5}
 				active={false}
-				title="Stop"
+                title="Stop"
+                textColor={props.theme.colors.primary}
+                backgroundColor={props.theme.colors.textPrimary}
+                activeTextColor={props.theme.colors.textPrimary}
+                activeBackgroundColor={props.theme.project.colors.projectPrimary}
 			></MtButton>
 			<MtButton
                 size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'hiking'}
-				activeOpacity={0.5}
-				active={false}
-				title="Start"
+				activeOpacity={1}
+				active={true}
+                title={'Start'}
+                textColor={props.theme.colors.primary}
+                backgroundColor={props.theme.colors.textPrimary}
+                activeTextColor={props.theme.colors.textPrimary}
+                activeBackgroundColor={props.theme.project.colors.projectPrimary}
 			></MtButton>
 			<MtButton
                 size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'camp_fire'}
 				activeOpacity={0.5}
 				active={false}
-				title="Pause"
+                title="Pause"
+                textColor={props.theme.colors.primary}
+                backgroundColor={props.theme.colors.textPrimary}
+                activeTextColor={props.theme.colors.textPrimary}
+                activeBackgroundColor={props.theme.project.colors.projectPrimary}
 			></MtButton>
 		</ActionsContainer>
 	);
@@ -55,7 +67,7 @@ const ActionsContainer = styled(View)`
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-around;
-	background-color: ${(props) => props.theme.colors.primary};
+	background-color: ${(props) => props.theme.colors.tertiary};
 `;
 
 //----

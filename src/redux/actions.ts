@@ -1,13 +1,11 @@
 // import Firebase from "_/database/firebase/setFunctions.js"
 // import { getTemplateData } from './initStates.js';
 
-
 // types
-import { ActionType } from './types';
-import { ThemeMode, ThemeType, SelectedTheme } from '/styles/types'
+import { ActionType, ProjectType, ProjectTaskType } from './types';
+import { ThemeMode, ThemeType, SelectedTheme } from '/styles/types';
 
-
- /**
+/**
  * Changes app theme.
  *
  * @param mode - theme mode (e.g. dark or light)
@@ -18,15 +16,89 @@ export function setTheme(mode: ThemeMode): ActionType {
 		type: 'SET_THEME',
 		setTheme: (themeOpts: ThemeType) => {
 			let defaultTheme: SelectedTheme = {
-                ...themeOpts[mode],  
-                fonts: themeOpts.fonts, 
-                options: themeOpts.options,
-                project: themeOpts.project
-            }
+				...themeOpts[mode],
+				fonts: themeOpts.fonts,
+				options: themeOpts.options,
+				project: themeOpts.project
+			};
 
-            return defaultTheme;
+			return defaultTheme;
 		}
-	}
+	};
+}
+
+export function setProjectTheme(): ActionType {
+	return {
+		type: 'SET_PROJECT_THEME',
+		setProjectTheme: (
+			themeOpts: SelectedTheme,
+			selectedProject: ProjectType
+		) => {
+			let editedTheme: SelectedTheme = {
+				...themeOpts,
+				project: selectedProject._id
+					? selectedProject.projectThemeOptions
+					: themeOpts.project
+			};
+
+			return editedTheme;
+		}
+	};
+}
+
+export function addProject(newProject: ProjectType): ActionType {
+	return {
+		type: 'ADD_PROJECT',
+		addProject: (allProjects: ProjectType[]) => {
+			let projects = [...allProjects];
+			projects.push(newProject);
+
+			return projects;
+		}
+	};
+}
+
+export function selectProject(selectProjectIndex: number): ActionType {
+	return {
+		type: 'SELECT_PROJECT',
+		selectProject: (allProjects: ProjectType[]) => {
+			return { ...allProjects[selectProjectIndex], selected: true };
+		}
+	};
+}
+
+export function addTask(newTask: ProjectTaskType): ActionType {
+	return {
+		type: 'ADD_TASK',
+		addTaskToSelectedProject: (selectedProject: ProjectType) => {
+			let project = { ...selectedProject };
+			project.tasks.unshift(newTask);
+
+			return project;
+		}
+	};
+}
+
+export function toggleTaskState(taskId: string): ActionType {
+	return {
+		type: 'TOGGLE_TASK_STATE',
+		toggleTaskState: (selectedProject: ProjectType) => {
+			let project = { ...selectedProject };
+            let toggled = project.tasks.find((task) => task._id === taskId);
+
+			if (toggled) {
+                let toggledIndex = project.tasks.indexOf(toggled);
+				project.tasks[toggledIndex] = {
+                    ...{checked: !toggled.checked},
+                    ...toggled
+                }
+
+				return project;
+			} else {
+				return project;
+			}
+		}
+	};
 }
 
 // export function startCounter(obj) {
@@ -62,13 +134,13 @@ export function setTheme(mode: ThemeMode): ActionType {
 // }
 
 // export function toggleTodo(todoId, isChecked) {
-// 	return { 
+// 	return {
 // 		type: 'TOGGLE_TODO',
 // 		toggleTodo: (projectObj) => {
 // 			projectObj.tasks.map((task, i) => {
 // 				if(task.id === todoId) {
 // 					task.checked = !task.checked
-// 				}	
+// 				}
 // 			})
 // 			return projectObj;
 // 		},
@@ -82,12 +154,11 @@ export function setTheme(mode: ThemeMode): ActionType {
 // 					logObj.tasks.splice(ind, 1);
 // 				}
 // 			}
-			
+
 // 			return logObj;
 // 		}
 // 	}
 // }
-
 
 // export function changeSelectedProject(project) {
 // 	return {
@@ -97,7 +168,6 @@ export function setTheme(mode: ThemeMode): ActionType {
 // 		}
 // 	}
 // }
-
 
 // const getdata = async () => {
 
@@ -156,6 +226,6 @@ export function setTheme(mode: ThemeMode): ActionType {
 // 			selectedProject: () => {
 // 				return Object.assign(getTemplateData("project"), data.selectedProject);
 // 			}
-// 		})	
+// 		})
 // 	})
 // }

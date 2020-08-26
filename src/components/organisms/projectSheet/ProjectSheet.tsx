@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '/screens/index';
@@ -43,7 +42,7 @@ const ProjectSheet = React.forwardRef<BottomSheetType, PropsWithTheme>(
                     enabledContentTapInteraction={false}
 				>
 					<ProjectSheetWrapper>
-                        <SelectedProjectInfo></SelectedProjectInfo>
+                        <SelectedProjectInfo onCloseButtonPress={() => ref?.current.snapTo(0)} navigation={props.navigation} route={props.route}></SelectedProjectInfo>
                         <ProjectList navigation={props.navigation} route={props.route}></ProjectList>
 					</ProjectSheetWrapper>
 				</BottomSheet>

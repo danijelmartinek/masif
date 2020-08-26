@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
-import { setTheme } from '/redux/actions';
+import { addProject, selectProject, setProjectTheme } from '/redux/actions';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -17,20 +17,30 @@ import ProjectIconSelect from '/components/molecules/projectIconSelect/';
 import { ProjectColorsType } from '/components/molecules/projectColorSelect/index.tsx';
 import { ProjectIconType } from '/components/molecules/projectIconSelect/index.tsx';
 
+import { makeId } from '/utils/helpers';
+
 import { providedColors, providedIcons } from '/styles/newProjectOptions.ts';
-import { SelectedTheme, ThemeMode } from '/styles/types';
+import { ProjectType } from '/redux/types';
+import { SelectedTheme } from '/styles/types';
 
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
 
+import { StoreStateType } from '/redux/types';
+
 //---- store
 
+const mapState = (state: StoreStateType) => ({
+	SELECTED_PROJECT: state.SELECTED_PROJECT
+});
 const mapDispatch = {
-	setTheme: (theme: ThemeMode) => setTheme(theme)
+    addProject: (project: ProjectType) => addProject(project),
+    selectProject: (index: number) => selectProject(index),
+    setProjectTheme: () => setProjectTheme()
 };
-const connector = connect(null, mapDispatch);
+const connector = connect(mapState, mapDispatch);
 
 //---- types
 
@@ -102,7 +112,29 @@ const NewProjectScreen = (props: PropsWithTheme) => {
 			setInputError(true);
 		} else {
 			setInputError(false);
-			console.log(newProjectName);
+			props.addProject({
+                _id: makeId(16),
+                name: newProjectName,
+                projectThemeOptions: {
+                    colors: {
+                        projectPrimary: newProjectBadge.primaryColor,
+                        projectSecondary: newProjectBadge.secondaryColor
+                    },
+                    icon: newProjectBadge.icon
+                },
+                tasks: [],
+                activities: [],
+                graphPoints: [],
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            });
+
+            if(!props.SELECTED_PROJECT._id) {
+                props.selectProject(0);
+                props.setProjectTheme();
+            }
+
+            props.navigation.goBack();
 		}
 	};
 

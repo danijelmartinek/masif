@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
-import { setTheme } from '/redux/actions';
+import { setTheme, setProjectTheme } from '/redux/actions';
 
 import MainScreenTaskList from '/components/organisms/mainScreenTaskList/';
 import MainScreenActions from '/components/organisms/mainScreenActions/';
 import MainScreenHeader from '/components/organisms/mainScreenHeader/'
-
 
 import MtGraphContainer from '/components/molecules/mtGraphContainer/';
 
@@ -15,15 +14,24 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
+import { StoreStateType } from '/redux/types'
+
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
 
+const mapState = (state: StoreStateType) => ({
+    DEFAULT_THEME: state.DEFAULT_THEME,
+    THEME_OPTIONS: state.THEME_OPTIONS,
+    ALL_PROJECTS: state.ALL_PROJECTS
+})
+
 const mapDispatch = {
-	setTheme: (theme: ThemeMode) => setTheme(theme)
+    setTheme: (theme: ThemeMode) => setTheme(theme),
+    setProjectTheme: () => setProjectTheme()
 };
-const connector = connect(null, mapDispatch);
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = StackScreenProps<RootStackParamList, 'Main'>;
@@ -43,13 +51,16 @@ const MainScreen = (props: PropsWithTheme) => {
 	);
 
 	const toggleTheme = () => {
-		if (props.theme.label === 'dark') {
-			props.setTheme(ThemeMode.LIGHT);
-			setStatusBarTheme('dark-content');
-		} else {
-			props.setTheme(ThemeMode.DARK);
-			setStatusBarTheme('light-content');
-		}
+		// if (props.theme.label === 'dark') {
+		// 	props.setTheme(ThemeMode.LIGHT);
+		// 	setStatusBarTheme('dark-content');
+		// } else {
+		// 	props.setTheme(ThemeMode.DARK);
+		// 	setStatusBarTheme('light-content');
+        // }
+        
+        // props.setProjectTheme();
+        // console.log(props.ALL_PROJECTS);
 	};
 
 	return (

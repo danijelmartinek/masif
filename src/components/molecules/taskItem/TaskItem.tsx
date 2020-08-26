@@ -41,7 +41,7 @@ const TaskItem = (props: PropsWithTheme) => {
 			<TaskFinishedToggle
 				onPress={props.onCheckPress}
 				checked={props.checked}
-				flagColor={'blue'}
+				flagColor={props.theme.project.colors.projectPrimary}
 				borderColor={hexToRGBA(props.theme.colors.textPrimary, 0.5)}
 				taskCheckOpacity={0.5}
 				taskCheckColor={props.theme.colors.textPrimary}

@@ -23,7 +23,7 @@ const MtGraph = (props: PropsWithTheme) => {
 		],
 		[maxAxes.x + 25, -maxAxes.y],
 		[0, -maxAxes.y]
-	];
+    ];
 
 	return (
 		<View>

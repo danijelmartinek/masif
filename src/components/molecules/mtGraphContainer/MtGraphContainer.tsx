@@ -239,7 +239,7 @@ const MtGraphContainer = (props: PropsWithTheme) => {
                 {/* <MtGraphDistancer options={OPTIONS}></MtGraphDistancer> */}
                 <MtGraphWrapper>
                     <MtGraph
-                        color="cyan"
+                        color={props.theme.project.colors.projectSecondary}
                         height={hp(getGraphHeight(50, 10))}
                         width={calcMtGraphWidth(
                             OPTIONS.segmentWidth,
@@ -290,7 +290,7 @@ const SelectIndicator = styled(View)`
 		wp(`${100 / props.options.visibleSegmentNum}%`)}px;
     height: ${hp('13.5%')}px;
     background-color: rgba(255, 255, 255, 0.2);
-    border: 2px solid red;
+    border: 2px solid ${(props) => props.theme.colors.textPrimary};
     border-radius: 10px;
 `;
 
@@ -316,7 +316,7 @@ const DateIndicator = styled(View)`
 const DateIndicatorDay = styled(View)`
     width: 100%;
     height: ${hp('15%')}px;
-    background-color: blue;
+    background-color: ${(props) => props.theme.colors.primary};
     align-items: center;
     justify-content: center;
 `;
