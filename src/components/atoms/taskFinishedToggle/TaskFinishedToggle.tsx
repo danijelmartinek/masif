@@ -14,6 +14,7 @@ type Props = {
     taskCheckColor: string;
     borderColor: string;
     text: string;
+    activeOpacity?: number;
     onPress?: () => void;
 };
 
@@ -21,7 +22,7 @@ type Props = {
 
 const TaskFinishedToggle = (props: Props) => {
 	return (
-		<TaskFinishedToggleWrapper borderColor={props.borderColor} activeOpacity={1} onPress={props.onPress}>
+		<TaskFinishedToggleWrapper borderColor={props.borderColor} activeOpacity={props.activeOpacity} onPress={props.onPress}>
 			{props.checked ? (
 				<Icon
 					type={'task_check'}
@@ -51,7 +52,7 @@ TaskFinishedToggle.defaultProps = {
     taskCheckColor: '#ffffff',
     borderColor: '#ffffff',
     text: '',
-    onPress: undefined
+    activeOpacity: 1
 };
 
 //---- styles

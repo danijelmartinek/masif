@@ -13,38 +13,39 @@ import {
 import { hexToRGBA } from '/utils/colorFormat';
 
 import { SelectedTheme } from '/styles/types';
+import { TaskPriorityType } from '/components/molecules/taskPrioritySelect/index';
 
 //---- types
-
-export enum PriorityVariants {
-	high,
-	medium,
-	low
-}
 
 type PropsWithTheme = {
 	theme: SelectedTheme;
 	checked?: boolean;
 	text: string;
-    priority?: PriorityVariants;
-    activeOpacity?: number;
-    onPress?: () => void;
-    onLongPress?: () => void;
-    onCheckPress?: () => void;
+	priority: TaskPriorityType;
+	activeOpacity?: number;
+	checkActiveOpacity?: number;
+	onPress?: () => void;
+	onLongPress?: () => void;
+	onCheckPress?: () => void;
 };
 
 //---- component
 
 const TaskItem = (props: PropsWithTheme) => {
 	return (
-		<TaskItemWrapper onPress={props.onPress} onLongPress={props.onLongPress} activeOpacity={props.activeOpacity}>
+		<TaskItemWrapper
+			onPress={props.onPress}
+			onLongPress={props.onLongPress}
+			activeOpacity={props.activeOpacity}
+		>
 			<TaskFinishedToggle
-                onPress={props.onCheckPress}
+				onPress={props.onCheckPress}
 				checked={props.checked}
-                flagColor={'blue'}
-                borderColor={hexToRGBA(props.theme.colors.textPrimary, 0.5)}
+				flagColor={'blue'}
+				borderColor={hexToRGBA(props.theme.colors.textPrimary, 0.5)}
 				taskCheckOpacity={0.5}
 				taskCheckColor={props.theme.colors.textPrimary}
+				activeOpacity={props.checkActiveOpacity}
 			></TaskFinishedToggle>
 
 			<TaskItemText
@@ -58,14 +59,14 @@ const TaskItem = (props: PropsWithTheme) => {
 				iconColor={props.theme.colors.textPrimary}
 				iconSize={hp('2.5%')}
 				textColor={
-					PriorityVariants[props.priority] === 'high'
+					props.priority === 'high'
 						? 'red'
-						: PriorityVariants[props.priority] === 'medium'
+						: props.priority === 'medium'
 						? 'yellow'
 						: 'green'
 				}
 				textSize={props.theme.fonts.oSize.gamma.fontSize}
-				text={PriorityVariants[props.priority]}
+				text={props.priority}
 			></TaskItemInfo>
 		</TaskItemWrapper>
 	);
@@ -76,11 +77,9 @@ const TaskItem = (props: PropsWithTheme) => {
 TaskItem.defaultProps = {
 	checked: false,
 	text: '',
-    priority: 'low',
-    activeOpacity: 1,
-    onPress: undefined,
-    onLongPress: undefined,
-    onCheckPress: undefined
+	priority: 'low',
+	activeOpacity: 1,
+	checkActiveOpacity: 1
 };
 
 //---- styles

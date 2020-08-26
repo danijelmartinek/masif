@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Badge from '../../atoms/mtBadge';
 
@@ -18,16 +17,21 @@ type Props = {
 	secondaryTextLineHeight: number;
 	primaryText: string;
 	secondaryText: string;
-    badge: [string, string, string];
-    activeOpacity: number;
-    onPress: () => void;
+	badge: [string, string, string];
+	activeOpacity?: number;
+	onPress?: () => void;
 };
 
 //---- component
 
 const ProjectListItem = (props: Props) => {
 	return (
-		<ProjectItem width={props.width} color={props.color} activeOpacity={props.activeOpacity} onPress={props.onPress}>
+		<ProjectItem
+			width={props.width}
+			color={props.color}
+			activeOpacity={props.activeOpacity}
+			onPress={props.onPress}
+		>
 			<ProjectBadge>
 				<Badge
 					icon={props.badge[0]}
@@ -68,8 +72,8 @@ ProjectListItem.defaultProps = {
 	secondaryTextLineHeight: 14,
 	primaryText: '',
 	secondaryText: '',
-    badge: ['hiking', '#004A8E', '#FF922E'],
-    activeOpacity: 1
+	badge: ['hiking', '#004A8E', '#FF922E'],
+	activeOpacity: 1
 };
 
 //---- styles

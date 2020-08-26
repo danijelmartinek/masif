@@ -55,9 +55,9 @@ const TaskItemInfoWrapper = styled(View)`
 `;
 
 const PriorityText = styled(Text)<{
-	size: number,
-	iconSize: number,
-	color: string
+	size: number;
+	iconSize: number;
+	color: string;
 }>`
 	font-size: ${(props) => props.size}px;
 	color: ${(props) => props.color};

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styled, { withTheme } from 'styled-components';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 
 import Spacer from '/components/atoms/spacer/';

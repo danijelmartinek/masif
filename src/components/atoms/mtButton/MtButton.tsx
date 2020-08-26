@@ -8,7 +8,7 @@ import Icon from '/components/atoms/icon/';
 
 type Props = {
 	icon: string;
-    title: string;
+    title?: string;
     size: number;
 	active: boolean;
 	backgroundColor: string;
@@ -18,13 +18,14 @@ type Props = {
     activeOpacity: number;
     fullWidth: boolean;
     disabled: boolean;
+    onPress?: () => void;
 };
 
 //---- component
 
 const MtButton = (props: Props) => {
 	return (
-		<TouchableOpacity activeOpacity={props.activeOpacity} disabled={props.disabled} style={{opacity: props.disabled ? 0.25 : 1}}>
+		<TouchableOpacity activeOpacity={props.activeOpacity} disabled={props.disabled} style={{opacity: props.disabled ? 0.25 : 1}} onPress={props.onPress}>
 			<MtButtonWrapper
                 size={props.size}
 				active={props.active}
@@ -56,7 +57,7 @@ const MtButton = (props: Props) => {
 
 MtButton.defaultProps = {
 	active: false,
-	backgroundColor: '#0000ff',
+	backgroundColor: 'transparent',
 	activeBackgroundColor: '#ff0000',
 	textColor: '#ffffff',
 	activeTextColor: '#000000',

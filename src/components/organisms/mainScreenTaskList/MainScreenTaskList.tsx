@@ -13,8 +13,6 @@ import {
 
 import { SelectedTheme } from '/styles/types';
 
-import { PriorityVariants } from '/components/molecules/taskItem/'
-
 //---- types
 
 type PropsWithTheme = {
@@ -34,40 +32,40 @@ const MainScreenTaskList = (props: PropsWithTheme) => {
 					text={
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 					}
-					priority={PriorityVariants['low']}
+					priority={'low'}
 					checked={true}
 				></TaskItem>
 				<TaskItem
 					text={'Etiam efficitur dui eget.'}
-					priority={PriorityVariants['medium']}
+					priority={'medium'}
 					checked={false}
 				></TaskItem>
 				<TaskItem
 					text={
 						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
 					}
-					priority={PriorityVariants['low']}
+					priority={'low'}
 					checked={false}
 				></TaskItem>
                 <TaskItem
 					text={
 						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
 					}
-					priority={PriorityVariants['high']}
+					priority={'high'}
 					checked={true}
 				></TaskItem>
                 <TaskItem
 					text={
 						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
 					}
-					priority={PriorityVariants['low']}
+					priority={'low'}
 					checked={false}
 				></TaskItem>
                 <TaskItem
 					text={
 						'Fusce dapibus nisl at risus accumsan, vel accumsan eros blandit.'
 					}
-					priority={PriorityVariants['low']}
+					priority={'low'}
 					checked={false}
 				></TaskItem>
                 <Spacer height={hp('3%')} width={wp('100%')}></Spacer>
