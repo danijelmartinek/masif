@@ -22,6 +22,7 @@ import { hexToRGBA } from '/utils/colorFormat';
 import { SelectedTheme } from '/styles/types';
 import { StoreStateType, ProjectType } from '/redux/types';
 import { selectProject, setProjectTheme } from '/redux/actions';
+import { getSelectedProject } from '/redux/selectors';
 
 //---- store
 
@@ -30,7 +31,7 @@ const mapDispatch = {
 	setProjectTheme: () => setProjectTheme()
 };
 const mapState = (state: StoreStateType) => ({
-	SELECTED_PROJECT: state.SELECTED_PROJECT
+	SELECTED_PROJECT: getSelectedProject(state)
 });
 const connector = connect(mapState, mapDispatch);
 
@@ -47,7 +48,7 @@ type PropsWithTheme = Props &
 
 const SelectedProjectInfo = (props: PropsWithTheme) => {
 	const getDurationSum = (): string => {
-		if (props.SELECTED_PROJECT.activities[0]) {
+		if (props.SELECTED_PROJECT?.activities[0]) {
 			return `Ø`;
 		} else {
 			return `Ø`;
@@ -55,7 +56,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 	};
 
 	const getStartDate = (): string => {
-		if (props.SELECTED_PROJECT.activities[0]) {
+		if (props.SELECTED_PROJECT?.activities[0]) {
 			return moment(
 				props.SELECTED_PROJECT.activities[0].startTime
 			).format('DD/MM/YYYY');
@@ -65,7 +66,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 	};
 
 	const getTasksCount = (): string => {
-		if (props.SELECTED_PROJECT.tasks[0]) {
+		if (props.SELECTED_PROJECT?.tasks[0]) {
 			const taskCount: number = props.SELECTED_PROJECT.tasks.length;
 			const checkedTasks: number = props.SELECTED_PROJECT.tasks.filter(
 				(task) => task.checked === true
@@ -108,7 +109,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 				</SelectedProjectDetailsItem>
 			</SelectedProjectDetails>
 			<ProjectSheetActionIcons>
-				{props.SELECTED_PROJECT._id ? (
+				{props.SELECTED_PROJECT?._id ? (
 					<ActionIcon1Wrapper
 						onPress={() =>
 							props.navigation.navigate('ProjectTasks', {

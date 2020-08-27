@@ -31,17 +31,15 @@ export function setProjectTheme(): ActionType {
 	return {
 		type: 'SET_PROJECT_THEME',
 		setProjectTheme: (
-			themeOpts: SelectedTheme,
-			selectedProject: ProjectType
+            themeOpts: SelectedTheme,
+            allProjects: ProjectType[],
+			selectedProject: string
 		) => {
-			let editedTheme: SelectedTheme = {
+            const selectedProjectObject = allProjects.find(project => project._id === selectedProject)
+			return {
 				...themeOpts,
-				project: selectedProject._id
-					? selectedProject.projectThemeOptions
-					: themeOpts.project
+				project: selectedProjectObject ? selectedProjectObject.projectThemeOptions : themeOpts.project
 			};
-
-			return editedTheme;
 		}
 	};
 }
@@ -62,42 +60,66 @@ export function selectProject(selectProjectIndex: number): ActionType {
 	return {
 		type: 'SELECT_PROJECT',
 		selectProject: (allProjects: ProjectType[]) => {
-			return { ...allProjects[selectProjectIndex], selected: true };
+			return allProjects[selectProjectIndex]._id;
 		}
 	};
 }
 
-export function addTask(newTask: ProjectTaskType): ActionType {
+export function addTask(newTask: ProjectTaskType, projectId: string): ActionType {
 	return {
-		type: 'ADD_TASK',
-		addTaskToSelectedProject: (selectedProject: ProjectType) => {
-			let project = { ...selectedProject };
-			project.tasks.unshift(newTask);
-
-			return project;
-		}
-	};
-}
-
-export function toggleTaskState(taskId: string): ActionType {
-	return {
-		type: 'TOGGLE_TASK_STATE',
-		toggleTaskState: (selectedProject: ProjectType) => {
-			let project = { ...selectedProject };
-            let toggled = project.tasks.find((task) => task._id === taskId);
-
-			if (toggled) {
-                let toggledIndex = project.tasks.indexOf(toggled);
-				project.tasks[toggledIndex] = {
-                    ...{checked: !toggled.checked},
-                    ...toggled
+        type: 'ADD_TASK',
+        addTaskToProjectsArray: (allProjects: ProjectType[]) => {
+            const mappedProjects = allProjects.map((pro: ProjectType) => {
+                if(pro._id === projectId) {
+                    pro.tasks = [newTask,...pro.tasks];
                 }
+                return pro;
+            });
 
-				return project;
-			} else {
-				return project;
-			}
-		}
+			return mappedProjects;
+		},
+		// addTaskToSelectedProject: (selectedProject: ProjectType) => {
+        //     selectedProject.tasks = [newTask, ...selectedProject.tasks]
+		// 	return selectedProject;
+		// }
+	};
+}
+
+export function toggleTaskState(taskId: string, projectId: string, taskChecked: boolean): ActionType {
+	return {
+        type: 'TOGGLE_TASK_STATE',
+        toggleTaskStateInProjectArray: (allProjects: ProjectType[]) => {
+            const mappedProjects = allProjects.map((pro: ProjectType) => {
+                if(pro._id === projectId) {
+                    const mappedTasks = pro.tasks.map((task) => {
+                        if(task._id === taskId) {
+                            task.checked = taskChecked;
+                        }
+                        return task;
+                    })
+                    return {...pro, tasks: mappedTasks};
+                }
+                return pro;
+            });
+
+			return mappedProjects;
+        },
+		// toggleTaskState: (selectedProject: ProjectType) => {
+		// 	let project = { ...selectedProject };
+        //     let toggled = project.tasks.find((task) => task._id === taskId);
+
+		// 	if (toggled) {
+        //         let toggledIndex = project.tasks.indexOf(toggled);
+		// 		project.tasks[toggledIndex] = {
+        //             ...{checked: !toggled.checked},
+        //             ...toggled
+        //         }
+
+		// 		return project;
+		// 	} else {
+		// 		return project;
+		// 	}
+        // }
 	};
 }
 

@@ -10,6 +10,7 @@ import {
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { addTask, toggleTaskState } from '/redux/actions';
+import { getSelectedProject } from '/redux/selectors';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -39,11 +40,11 @@ import { StoreStateType } from '/redux/types';
 //---- store
 
 const mapState = (state: StoreStateType) => ({
-	SELECTED_PROJECT: state.SELECTED_PROJECT
+	SELECTED_PROJECT: getSelectedProject(state)
 });
 const mapDispatch = {
-    addTask: (task: ProjectTaskType) => addTask(task),
-    toggleTaskState: (taskId: string) => toggleTaskState(taskId)
+    addTask: (task: ProjectTaskType, projectId: string) => addTask(task, projectId),
+    toggleTaskState: (taskId: string, projectId: string, taskChecked:boolean) => toggleTaskState(taskId, projectId, taskChecked)
 };
 const connector = connect(mapState, mapDispatch);
 
@@ -89,11 +90,10 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 
 	const changeCheckedState = (index: number) => {
 
-        props.toggleTaskState(projectTasks[index]._id);
-
 		let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
-		tempProjectTasks[index].checked = !tempProjectTasks[index].checked;
-
+        tempProjectTasks[index].checked = !tempProjectTasks[index].checked;
+        
+        props.toggleTaskState(projectTasks[index]._id, props.route.params.projectId, tempProjectTasks[index].checked);
 		changeProjectTasks(tempProjectTasks);
     };
 
@@ -107,7 +107,7 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
             checked: false,
             createdAt: Date.now(),
             updatedAt: Date.now(),
-        });
+        }, props.route.params.projectId);
 
 		changeProjectTasks(tempProjectTasks);
 

@@ -3,6 +3,7 @@ import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { addProject, selectProject, setProjectTheme } from '/redux/actions';
+import { getSelectedProject } from '/redux/selectors';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -33,7 +34,7 @@ import { StoreStateType } from '/redux/types';
 //---- store
 
 const mapState = (state: StoreStateType) => ({
-	SELECTED_PROJECT: state.SELECTED_PROJECT
+	SELECTED_PROJECT: getSelectedProject(state)
 });
 const mapDispatch = {
     addProject: (project: ProjectType) => addProject(project),
@@ -129,7 +130,7 @@ const NewProjectScreen = (props: PropsWithTheme) => {
                 updatedAt: Date.now()
             });
 
-            if(!props.SELECTED_PROJECT._id) {
+            if(!props.SELECTED_PROJECT) {
                 props.selectProject(0);
                 props.setProjectTheme();
             }

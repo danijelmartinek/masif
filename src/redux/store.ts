@@ -10,22 +10,7 @@ const initialState: StoreStateType = {
     DEFAULT_THEME: initTheme(themeOptions, ThemeMode.DARK),
 
     ALL_PROJECTS: [],
-    SELECTED_PROJECT: {
-        _id: '',
-        name: '',
-        projectThemeOptions: {
-            colors: {
-                projectPrimary: 'green',
-                projectSecondary: 'green'
-            },
-            icon: 'hiking'
-        },
-        tasks: [],
-        activities: [],
-        graphPoints: [],
-        createdAt: 0,
-        updatedAt: 0,
-    },
+    SELECTED_PROJECT: '',
     // LOG_INFO: getTemplateData("log"),
 
     // REF_COUNTER: {}
@@ -41,7 +26,7 @@ const Reducer = (state: StoreStateType = initialState, action: ActionType): Stor
         case 'SET_PROJECT_THEME':
             return {
                 ...state,
-                DEFAULT_THEME: action.setProjectTheme(state.DEFAULT_THEME, state.SELECTED_PROJECT)
+                DEFAULT_THEME: action.setProjectTheme(state.DEFAULT_THEME, state.ALL_PROJECTS, state.SELECTED_PROJECT)
             }
 
         case 'ADD_PROJECT':
@@ -58,12 +43,14 @@ const Reducer = (state: StoreStateType = initialState, action: ActionType): Stor
         case 'ADD_TASK':
             return {
                 ...state,
-                SELECTED_PROJECT: action.addTaskToSelectedProject(state.SELECTED_PROJECT)
+                ALL_PROJECTS: action.addTaskToProjectsArray(state.ALL_PROJECTS),
+                // SELECTED_PROJECT: action.addTaskToSelectedProject(state.SELECTED_PROJECT)
             }
         case 'TOGGLE_TASK_STATE':
             return {
                 ...state,
-                SELECTED_PROJECT: action.toggleTaskState(state.SELECTED_PROJECT)
+                ALL_PROJECTS: action.toggleTaskStateInProjectArray(state.ALL_PROJECTS),
+                // SELECTED_PROJECT: action.toggleTaskState(state.SELECTED_PROJECT)
             }
         // case 'START_COUNTER':
         //     return {

@@ -41,7 +41,7 @@ export interface StoreStateType {
     DEFAULT_THEME: SelectedTheme,
 
     ALL_PROJECTS?: ProjectType[],
-    SELECTED_PROJECT: ProjectType
+    SELECTED_PROJECT: string
     // LOG_INFO: getTemplateData("log"),
 
     // REF_COUNTER: {}
