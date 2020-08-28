@@ -31,17 +31,18 @@ type PropsWithTheme = Props & {
 
 const ProjectSheet = React.forwardRef<BottomSheetType, PropsWithTheme>(
 	(props, ref) => {
-		const [selected, setSelected] = useState(false);
+        const [selected, setSelected] = useState(false);
 
 		return (
 			<ProjectSheetContainer pointerEvents={'box-none'}>
 				<BottomSheet
 					ref={ref}
 					snapPoints={[0, hp('100%') + Constants.statusBarHeight]}
-					initialSnap={0}
+                    initialSnap={0}
+                    enabledContentTapInteraction={!!Constants.platform?.ios ? false : true}
 				>
 					<ProjectSheetWrapper>
-                        <SelectedProjectInfo onCloseButtonPress={() => ref?.current.snapTo(0)} navigation={props.navigation} route={props.route}></SelectedProjectInfo>
+                        <SelectedProjectInfo onCloseButtonPress={() => ref?.current?.snapTo(0)} navigation={props.navigation} route={props.route}></SelectedProjectInfo>
                         <ProjectList navigation={props.navigation} route={props.route}></ProjectList>
 					</ProjectSheetWrapper>
 				</BottomSheet>

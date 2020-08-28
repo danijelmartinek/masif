@@ -39,6 +39,12 @@ const Reducer = (state: StoreStateType = initialState, action: ActionType): Stor
                 ...state,
                 ALL_PROJECTS: action.addProject(state.ALL_PROJECTS)
             }
+        case 'REMOVE_PROJECT':
+            return {
+                ...state,
+                ALL_PROJECTS: action.removeProject(state.ALL_PROJECTS),
+                SELECTED_PROJECT: action.checkSelectedProject(state.SELECTED_PROJECT)
+            }
 
         case 'SELECT_PROJECT':
             return {
@@ -49,6 +55,12 @@ const Reducer = (state: StoreStateType = initialState, action: ActionType): Stor
             return {
                 ...state,
                 ALL_PROJECTS: action.addTaskToProjectsArray(state.ALL_PROJECTS),
+                // SELECTED_PROJECT: action.addTaskToSelectedProject(state.SELECTED_PROJECT)
+            }
+        case 'REMOVE_TASK':
+            return {
+                ...state,
+                ALL_PROJECTS: action.removeTaskFromProjectsArray(state.ALL_PROJECTS),
                 // SELECTED_PROJECT: action.addTaskToSelectedProject(state.SELECTED_PROJECT)
             }
         case 'TOGGLE_TASK_STATE':

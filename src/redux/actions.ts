@@ -56,6 +56,24 @@ export function addProject(newProject: ProjectType): ActionType {
 	};
 }
 
+export function removeProject(projectId: string): ActionType {
+	return {
+		type: 'REMOVE_PROJECT',
+		removeProject: (allProjects: ProjectType[]) => {
+			let projects = allProjects.filter(pro => pro._id !== projectId);
+
+			return projects;
+        },
+        checkSelectedProject: (selectedProjectId: string) => {
+			if(selectedProjectId === projectId) {
+                return '';
+            } else {
+                return selectedProjectId;
+            }
+        },
+	};
+}
+
 export function selectProject(selectProjectIndex: number): ActionType {
 	return {
 		type: 'SELECT_PROJECT',
@@ -77,11 +95,23 @@ export function addTask(newTask: ProjectTaskType, projectId: string): ActionType
             });
 
 			return mappedProjects;
-		},
-		// addTaskToSelectedProject: (selectedProject: ProjectType) => {
-        //     selectedProject.tasks = [newTask, ...selectedProject.tasks]
-		// 	return selectedProject;
-		// }
+		}
+	};
+}
+
+export function removeTask(taskId: string, projectId: string): ActionType {
+	return {
+        type: 'REMOVE_TASK',
+        removeTaskFromProjectsArray: (allProjects: ProjectType[]) => {
+            const mappedProjects = allProjects.map((pro: ProjectType) => {
+                if(pro._id === projectId) {
+                    pro.tasks = pro.tasks.filter(task => task._id !== taskId);
+                }
+                return pro;
+            });
+
+			return mappedProjects;
+		}
 	};
 }
 

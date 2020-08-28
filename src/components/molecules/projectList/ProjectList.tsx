@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View, Text } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import CounterContext from '/context/counter';
+import OptionsModalContext from '/context/optionsModal';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '/screens/index';
@@ -20,11 +21,12 @@ import { hexToRGBA } from '/utils/colorFormat';
 
 import { SelectedTheme } from '/styles/types';
 import { StoreStateType, ProjectType } from '/redux/types';
-import { selectProject, setProjectTheme } from '/redux/actions';
+import { removeProject, selectProject, setProjectTheme } from '/redux/actions';
 
 //---- store
 
 const mapDispatch = {
+    removeProject: (projectId: string) => removeProject(projectId),
 	selectProject: (index: number) => selectProject(index),
 	setProjectTheme: () => setProjectTheme()
 };
@@ -45,6 +47,8 @@ type PropsWithTheme = Props &
 //---- component
 
 const ProjectList = (props: PropsWithTheme) => {
+    const optionsModal = useContext(OptionsModalContext);
+
 	const { ActiveCounterRef, PauseCounterRef } = useContext(CounterContext);
     const [projectActive, setProjectActive] = useState(false);
     
@@ -69,56 +73,76 @@ const ProjectList = (props: PropsWithTheme) => {
 			props.selectProject(index);
 			props.setProjectTheme();
 		}
-	};
+    };
+    
+    const options = [
+        {
+            item: 'Edit',
+            f: (optionsRef, data) => {
+                props.navigation.navigate('EditProject', data);
+                optionsRef.closeOptions();
+            }
+        },
+        {
+            item: 'Delete',
+            f: (optionsRef, data) => {
+                props.removeProject(project._id);
+                optionsRef.closeOptions();
+            }
+        }
+    ];
 
 	return (
-		<ProjectListContainer>
-			<ProjectListHeader>
-				<ProjectListTitle>Projects</ProjectListTitle>
-				<ProjectListAdd
-					onPress={() => props.navigation.navigate('NewProject')}
-				>
-					<Icon
-						type={'plus'}
-						color={props.theme.colors.textPrimary}
-					></Icon>
-				</ProjectListAdd>
-			</ProjectListHeader>
+        <React.Fragment>
+            <ProjectListContainer>
+                <ProjectListHeader>
+                    <ProjectListTitle>Projects</ProjectListTitle>
+                    <ProjectListAdd
+                        onPress={() => props.navigation.navigate('NewProject')}
+                    >
+                        <Icon
+                            type={'plus'}
+                            color={props.theme.colors.textPrimary}
+                        ></Icon>
+                    </ProjectListAdd>
+                </ProjectListHeader>
 
-			<ProjectListWrapper disabled={projectActive}>
-				{props.ALL_PROJECTS?.map((project, i) => (
-					<ProjectListItem
-						key={Math.random() * i}
-						primaryText={project.name}
-						secondaryText={getLastProjectActivity(project)}
-						badge={[
-							project.projectThemeOptions.icon,
-							project.projectThemeOptions.colors.projectPrimary,
-							project.projectThemeOptions.colors.projectSecondary
-						]}
-						width={wp('100%')}
-						color={props.theme.colors.tertiary}
-						primaryTextColor={props.theme.colors.textPrimary}
-						secondaryTextColor={hexToRGBA(
-							props.theme.colors.textPrimary,
-							0.5
-						)}
-						primaryTextSize={props.theme.fonts.oSize.gamma.fontSize}
-						primaryTextLineHeight={
-							props.theme.fonts.oSize.gamma.lineHeight
-						}
-						secondaryTextSize={
-							props.theme.fonts.oSize.delta.fontSize
-						}
-						secondaryTextLineHeight={
-							props.theme.fonts.oSize.delta.lineHeight
-						}
-						activeOpacity={projectActive ? 1 : 0.5}
-						onPress={() => handleProjectSelect(i)}
-					></ProjectListItem>
-				))}
-			</ProjectListWrapper>
-		</ProjectListContainer>
+                <ProjectListWrapper disabled={projectActive}>
+                    {props.ALL_PROJECTS?.map((project, i) => (
+                        <ProjectListItem
+                            key={Math.random() * i}
+                            primaryText={project.name}
+                            secondaryText={getLastProjectActivity(project)}
+                            badge={[
+                                project.projectThemeOptions.icon,
+                                project.projectThemeOptions.colors.projectPrimary,
+                                project.projectThemeOptions.colors.projectSecondary
+                            ]}
+                            width={wp('100%')}
+                            color={props.theme.colors.tertiary}
+                            primaryTextColor={props.theme.colors.textPrimary}
+                            secondaryTextColor={hexToRGBA(
+                                props.theme.colors.textPrimary,
+                                0.5
+                            )}
+                            primaryTextSize={props.theme.fonts.oSize.gamma.fontSize}
+                            primaryTextLineHeight={
+                                props.theme.fonts.oSize.gamma.lineHeight
+                            }
+                            secondaryTextSize={
+                                props.theme.fonts.oSize.delta.fontSize
+                            }
+                            secondaryTextLineHeight={
+                                props.theme.fonts.oSize.delta.lineHeight
+                            }
+                            activeOpacity={projectActive ? 1 : 0.5}
+                            onPress={() => handleProjectSelect(i)}
+                            onLongPress={() => optionsModal.openOptions(project, options)}
+                        ></ProjectListItem>
+                    ))}
+                </ProjectListWrapper>
+            </ProjectListContainer>
+        </React.Fragment>
 	);
 };
 

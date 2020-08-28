@@ -1,5 +1,5 @@
 import React, { FunctionComponentElement, ComponentElement } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
@@ -190,8 +190,8 @@ const LayoutContent = styled(View)<{
 	width: ${wp('100%')}px;
 	height: ${(props) =>
 		props.actionsEnabled
-			? hp('85%') - Constants.statusBarHeight
-			: hp('94%') - Constants.statusBarHeight}px;
+			? hp('85%')
+			: hp('94%')}px;
 `;
 
 const ActionsContainer = styled(View)`

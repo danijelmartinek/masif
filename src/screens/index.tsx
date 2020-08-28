@@ -1,26 +1,29 @@
-import InitialScreen from "./Initial";
-import HelloScreen from "./Hello";
-import MainScreen from "./Main";
-import ProjectScreen from "./Project";
-import NewProjectScreen from "./NewProject";
-import ProjectTaskScreen from "./ProjectTasks";
+import InitialScreen from './Initial';
+import HelloScreen from './Hello';
+import MainScreen from './Main';
+import ProjectScreen from './Project';
+import NewProjectScreen from './NewProject';
+import EditProjectScreen from './EditProject';
+import ProjectTaskScreen from './ProjectTasks';
 
 export type RootStackParamList = {
-    Initial: {},
-    Hello: {},
-    Main: {},
-    NewProject: {}
-    Project: {},
-    ProjectTasks: {
-        projectId: string;
-    }
+	Initial: {};
+	Hello: {};
+	Main: {};
+	NewProject: {};
+	EditProject: {};
+	Project: {};
+	ProjectTasks: {
+		projectId: string;
+	};
 };
 
 export {
-    InitialScreen,
-    HelloScreen,
-    MainScreen,
-    ProjectScreen,
+	InitialScreen,
+	HelloScreen,
+	MainScreen,
+	ProjectScreen,
     NewProjectScreen,
-    ProjectTaskScreen
-}
+    EditProjectScreen,
+	ProjectTaskScreen
+};

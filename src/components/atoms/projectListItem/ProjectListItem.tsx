@@ -20,7 +20,8 @@ type Props = {
 	secondaryText: string;
 	badge: [string, string, string];
 	activeOpacity?: number;
-	onPress?: () => void;
+    onPress?: () => void;
+    onLongPress?: () => void;
 };
 
 //---- component
@@ -31,7 +32,8 @@ const ProjectListItem = (props: Props) => {
 			width={props.width}
 			color={props.color}
 			activeOpacity={props.activeOpacity}
-			onPress={props.onPress}
+            onPress={props.onPress}
+            onLongPress={props.onLongPress}
 		>
 			<ProjectBadge>
 				<Badge

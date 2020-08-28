@@ -1,6 +1,6 @@
 import { useKeepAwake } from 'expo-keep-awake';
 
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { useStopwatch } from 'react-timer-hook';
 
 import { hmsTos } from '/utils/helpers';
@@ -88,6 +88,6 @@ export const CounterProvider = (props: any) => {
 	);
 };
 
-export const UserConsumer = CounterContext.Consumer;
+export const CounterConsumer = CounterContext.Consumer;
 
 export default CounterContext;

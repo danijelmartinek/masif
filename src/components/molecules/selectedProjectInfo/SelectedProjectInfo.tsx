@@ -118,7 +118,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 						}
 					>
 						<Icon
-							type={'edit'}
+							type={'flag'}
 							color={props.theme.colors.textPrimary}
 						></Icon>
 					</ActionIcon1Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
 	View,
 	Text,
@@ -6,8 +6,9 @@ import {
 } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
-import { addTask, toggleTaskState } from '/redux/actions';
+import { addTask, removeTask, toggleTaskState } from '/redux/actions';
 import { getSelectedProject } from '/redux/selectors';
+import OptionsModalContext from '/context/optionsModal';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -41,6 +42,7 @@ const mapState = (state: StoreStateType) => ({
 });
 const mapDispatch = {
     addTask: (task: ProjectTaskType, projectId: string) => addTask(task, projectId),
+    removeTask: (taskId: string, projectId: string) => removeTask(taskId, projectId),
     toggleTaskState: (taskId: string, projectId: string, taskChecked:boolean) => toggleTaskState(taskId, projectId, taskChecked)
 };
 const connector = connect(mapState, mapDispatch);
@@ -67,6 +69,7 @@ const prioritySelectSettings: TaskPrioritySelectProps = {
 };
 
 const ProjectTaskScreen = (props: PropsWithTheme) => {
+    const optionsModal = useContext(OptionsModalContext);
 
 	const [statusBarTheme] = useState<StatusBarStyleType>(() => {
 		if (props.theme.label === 'dark') {
@@ -104,7 +107,17 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
         }, props.route.params.projectId);
 
 		return true;
-	};
+    };
+    
+    const options = [
+        {
+            item: 'Delete',
+            f: (optionsRef, data) => {
+                props.removeTask(projectTasks[data]._id, props.route.params.projectId);
+                optionsRef.closeOptions();
+            }
+        }
+    ];
 
 	return (
 		<ProjectTaskScreenContainer>
@@ -140,7 +153,7 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 								activeOpacity={0.5}
 								checkActiveOpacity={0.5}
 								onPress={() => console.log('press')}
-								onLongPress={() => console.log('long press')}
+								onLongPress={() => optionsModal.openOptions(i, options)}
 								onCheckPress={() => changeCheckedState(i)}
 							></TaskItem>
 						))}

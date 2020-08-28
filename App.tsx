@@ -9,10 +9,20 @@ import { Provider } from 'react-redux';
 import configureStore from '/redux/configureStore';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { RootStackParamList, InitialScreen, HelloScreen, MainScreen, NewProjectScreen, ProjectTaskScreen, ProjectScreen } from '/screens/';
+import {
+	RootStackParamList,
+	InitialScreen,
+	HelloScreen,
+	MainScreen,
+	NewProjectScreen,
+	EditProjectScreen,
+	ProjectTaskScreen,
+	ProjectScreen
+} from '/screens/';
 import Theme from '/styles/themeComponent/';
 
 import { CounterProvider } from '/context/counter';
+import { OptionsModalProvider } from '/context/optionsModal';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 const { store, persistor } = configureStore();
@@ -20,74 +30,86 @@ const { store, persistor } = configureStore();
 export default function App() {
 	return (
 		<Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <CounterProvider>
-                    <Theme>
-                        <NavigationContainer>
-                            <RootStack.Navigator
-                                initialRouteName="Initial"
-                                headerMode={'float'}
-                            >
-                                <RootStack.Screen
-                                    name="Initial"
-                                    component={InitialScreen}
-                                    options={{
-                                        headerShown: false,
-                                        animationEnabled: false,
-                                    }}
-                                />
-                                <RootStack.Screen
-                                    name="Hello"
-                                    component={HelloScreen}
-                                    options={{
-                                        headerShown: false,
-                                        animationEnabled: false,
-                                    }}
-                                />
-                                <RootStack.Screen
-                                    name="Main"
-                                    component={MainScreen}
-                                    options={{
-                                        headerShown: false,
-                                        animationEnabled: false,
-                                    }}
-                                />
-                                <RootStack.Screen
-                                    name="NewProject"
-                                    component={NewProjectScreen}
-                                    initialParams={{}}
-                                    options={{
-                                        headerShown: false,
-                                        gestureEnabled: true,
-                                        ...TransitionPresets.SlideFromRightIOS
-                                    }}
-                                />
-                                <RootStack.Screen
-                                    name="ProjectTasks"
-                                    component={ProjectTaskScreen}
-                                    initialParams={{
-                                        projectId: ''
-                                    }}
-                                    options={{
-                                        headerShown: false,
-                                        gestureEnabled: true,
-                                        ...TransitionPresets.SlideFromRightIOS
-                                    }}
-                                />
-                                <RootStack.Screen
-                                    name="Project"
-                                    component={ProjectScreen}
-                                    initialParams={{}}
-                                    options={{
-                                        headerShown: false,
-                                        gestureDirection: 'horizontal',
-                                    }}
-                                />
-                            </RootStack.Navigator>
-                        </NavigationContainer>
-                    </Theme>
-                </CounterProvider>
-            </PersistGate>
+			<PersistGate loading={null} persistor={persistor}>
+				<CounterProvider>
+					<Theme>
+						<OptionsModalProvider>
+							<NavigationContainer>
+								<RootStack.Navigator
+									initialRouteName="Initial"
+									headerMode={'float'}
+								>
+									<RootStack.Screen
+										name="Initial"
+										component={InitialScreen}
+										options={{
+											headerShown: false,
+											animationEnabled: false
+										}}
+									/>
+									<RootStack.Screen
+										name="Hello"
+										component={HelloScreen}
+										options={{
+											headerShown: false,
+											animationEnabled: false
+										}}
+									/>
+									<RootStack.Screen
+										name="Main"
+										component={MainScreen}
+										options={{
+											headerShown: false,
+											animationEnabled: false
+										}}
+									/>
+									<RootStack.Screen
+										name="NewProject"
+										component={NewProjectScreen}
+										initialParams={{}}
+										options={{
+											headerShown: false,
+											gestureEnabled: true,
+											...TransitionPresets.SlideFromRightIOS
+										}}
+									/>
+                                    <RootStack.Screen
+										name="EditProject"
+										component={EditProjectScreen}
+										initialParams={{}}
+										options={{
+											headerShown: false,
+											gestureEnabled: true,
+											...TransitionPresets.SlideFromRightIOS
+										}}
+									/>
+									<RootStack.Screen
+										name="ProjectTasks"
+										component={ProjectTaskScreen}
+										initialParams={{
+											projectId: ''
+										}}
+										options={{
+											headerShown: false,
+											gestureEnabled: true,
+											...TransitionPresets.SlideFromRightIOS
+										}}
+									/>
+									<RootStack.Screen
+										name="Project"
+										component={ProjectScreen}
+										initialParams={{}}
+										options={{
+											headerShown: false,
+											gestureDirection: 'horizontal'
+										}}
+									/>
+								</RootStack.Navigator>
+							</NavigationContainer>
+						</OptionsModalProvider>
+					</Theme>
+				</CounterProvider>
+			</PersistGate>
 		</Provider>
 	);
 }

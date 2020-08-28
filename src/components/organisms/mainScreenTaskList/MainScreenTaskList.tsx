@@ -10,14 +10,10 @@ import { getSelectedProject } from '/redux/selectors';
 import Spacer from '/components/atoms/spacer/';
 import TaskItem from '/components/molecules/taskItem/';
 
-import BottomSheet from '/components/atoms/bottomSheet/';
-
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
-import { hexToRGBA } from '/utils/colorFormat';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { SelectedTheme } from '/styles/types';
 import { StoreStateType, ProjectTaskType } from '/redux/types';
@@ -50,8 +46,6 @@ const MainScreenTaskList = (props: PropsWithTheme) => {
 	const [projectTasks, changeProjectTasks] = React.useState<
 		ProjectTaskType[]
 	>(props.SELECTED_PROJECT?.tasks || []);
-
-	const ref = React.useRef();
 
 	React.useEffect(() => {
 		if (
@@ -91,43 +85,13 @@ const MainScreenTaskList = (props: PropsWithTheme) => {
 						activeOpacity={0.5}
 						checkActiveOpacity={0.5}
 						onPress={() => console.log('press')}
-						onLongPress={() => ref?.current.snapTo(1)}
+						onLongPress={() => console.log('long press')}
 						onCheckPress={() => changeCheckedState(i)}
 					></TaskItem>
 				))}
 				{!projectTasks[0] ? <ListEmpty>No tasks</ListEmpty> : null}
 				<Spacer height={hp('3%')} width={wp('100%')}></Spacer>
 			</ScrollView>
-			<BottomSheet
-				ref={ref}
-				snapPoints={[0, hp('40%') + 1 * hp('6%')]}
-                initialSnap={0}
-                enabledContentTapInteraction={false}
-			>
-				<LinearGradient
-					style={{ height: '100%' }}
-					colors={[
-						hexToRGBA(props.theme.colors.primary, 1),
-						hexToRGBA(props.theme.colors.primary, 0.9),
-                        hexToRGBA(props.theme.colors.primary, 0.8),
-						'transparent'
-					]}
-					start={{ x: 0, y: 1 }}
-					end={{ x: 0, y: 0 }}
-				>
-					<OptionSheetWrapper>
-						<OptionSheetItem>
-							<OptionSheetItemText>Delete</OptionSheetItemText>
-						</OptionSheetItem>
-
-						<OptionsSheetClose>
-                            <CloseSheetItem onPress={() => ref?.current.snapTo(0)}>
-                                <OptionSheetItemText>Cancel</OptionSheetItemText>
-                            </CloseSheetItem>
-                        </OptionsSheetClose>
-					</OptionSheetWrapper>
-				</LinearGradient>
-			</BottomSheet>
 		</TasksContainer>
 	);
 };
@@ -159,36 +123,6 @@ const ListEmpty = styled(Text)`
 	text-transform: uppercase;
 	padding: ${hp('2%')}px;
 	text-align: left;
-`;
-
-const OptionSheetWrapper = styled(View)`
-	width: ${wp('100%')}px;
-	height: 100%;
-	align-items: center;
-    justify-content: center;
-`;
-
-const OptionSheetItem = styled(TouchableOpacity)`
-	padding: ${hp('1.5%')}px ${wp('5%')}px;
-`;
-
-const OptionsSheetClose = styled(View)`
-    width: ${wp('90%')}px;
-    position: absolute;
-	bottom: ${Constants.statusBarHeight}px;
-	border-top-width: 1px;
-	border-color: ${(props) => hexToRGBA(props.theme.colors.textPrimary, 0.5)};
-`;
-
-const CloseSheetItem = styled(TouchableOpacity)`
-	align-items: center;
-	padding: ${hp('2.5%')}px;
-`;
-
-const OptionSheetItemText = styled(Text)`
-	${(props) => props.theme.fonts.size.beta};
-	color: ${(props) => props.theme.colors.textPrimary};
-	font-weight: bold;
 `;
 
 //----

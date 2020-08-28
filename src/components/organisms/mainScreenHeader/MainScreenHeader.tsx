@@ -46,7 +46,7 @@ const MainScreenHeader = (props: PropsWithTheme) => {
 						{/* <Icon type={'camp_tent'} color={'white'} size={hp('6%')}></Icon> */}
 						<Badge
 							icon={props.theme.project.icon}
-							size={48}
+							size={hp('7%')}
 							primaryColor={
 								props.theme.project.colors.projectPrimary
 							}
@@ -90,7 +90,8 @@ const HeaderWrapper = styled(View)`
 const MenuButtonsWrapper = styled(View)`
 	width: 50%;
 	flex-direction: row;
-	justify-content: flex-end;
+    justify-content: flex-end;
+    align-items: center;
 `;
 
 const MenuButton = styled(TouchableOpacity)`
