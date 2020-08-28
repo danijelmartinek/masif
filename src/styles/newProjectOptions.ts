@@ -3,18 +3,33 @@ import { ProjectIconType } from '/components/molecules/projectIconSelect/index.t
 
 const providedColors: ProjectColorsType[] = [
 	{
-		primary: 'red',
-		secondary: 'purple',
+		primary: '#7A008E',
+		secondary: '#FF2EC4',
 		selected: true
 	},
 	{
-		primary: 'orange',
-		secondary: 'blue',
+		primary: '#8E0000',
+		secondary: '#FFC42E',
 		selected: false
 	},
 	{
-		primary: 'cyan',
-		secondary: 'pink',
+		primary: '#008E6C',
+		secondary: '#2EFFCD',
+		selected: false
+    },
+    {
+		primary: '#50008E',
+		secondary: '#FF792E',
+		selected: false
+    },
+    {
+		primary: '#8E004B',
+		secondary: '#FF2E2E',
+		selected: false
+    },
+    {
+		primary: '#33008E',
+		secondary: '#2ED9FF',
 		selected: false
 	}
 ];

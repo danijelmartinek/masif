@@ -38,8 +38,7 @@ const ProjectSheet = React.forwardRef<BottomSheetType, PropsWithTheme>(
 				<BottomSheet
 					ref={ref}
 					snapPoints={[0, hp('100%') + Constants.statusBarHeight]}
-					initialSnap={1}
-                    enabledContentTapInteraction={false}
+					initialSnap={0}
 				>
 					<ProjectSheetWrapper>
                         <SelectedProjectInfo onCloseButtonPress={() => ref?.current.snapTo(0)} navigation={props.navigation} route={props.route}></SelectedProjectInfo>

@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import {
 	View,
 	Text,
-	Button,
-	ScrollView,
 	StatusBar,
-	TouchableOpacity
 } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
@@ -22,25 +19,25 @@ import Spacer from '/components/atoms/spacer/';
 
 import TaskAdd from '/components/organisms/taskAdd/';
 
-import { SelectedTheme, ThemeMode } from '/styles/types';
-import { ProjectTaskType } from '/redux/types'
-
 import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
 import { makeId } from '/utils/helpers';
 
+import { SelectedTheme, ThemeMode } from '/styles/types';
+import { StoreStateType, ProjectTaskType } from '/redux/types';
+
 import {
 	TaskPrioritySelectProps,
 	TaskPriorityType
 } from '/components/molecules/taskPrioritySelect/index';
-import { StoreStateType } from '/redux/types';
 
 //---- store
 
 const mapState = (state: StoreStateType) => ({
-	SELECTED_PROJECT: getSelectedProject(state)
+    SELECTED_PROJECT: getSelectedProject(state),
+    ALL_PROJECTS: state.ALL_PROJECTS
 });
 const mapDispatch = {
     addTask: (task: ProjectTaskType, projectId: string) => addTask(task, projectId),
@@ -64,21 +61,12 @@ type StatusBarStyleType =
 
 //---- component
 
-const ProjectTaskScreen = (props: PropsWithTheme) => {
-	const [projectTasks, changeProjectTasks] = React.useState<
-		ProjectTaskType[]
-    >(props.SELECTED_PROJECT.tasks || []);
-    
-    React.useEffect(() => {
-        if(props.SELECTED_PROJECT.tasks !== projectTasks) {
-            changeProjectTasks(props.SELECTED_PROJECT.tasks);
-        }
-    })
+const prioritySelectSettings: TaskPrioritySelectProps = {
+    activeOpacity: 0.75,
+    title: 'Select Priority'
+};
 
-	const prioritySelectSettings: TaskPrioritySelectProps = {
-		activeOpacity: 0.75,
-		title: 'Select Priority'
-	};
+const ProjectTaskScreen = (props: PropsWithTheme) => {
 
 	const [statusBarTheme] = useState<StatusBarStyleType>(() => {
 		if (props.theme.label === 'dark') {
@@ -88,17 +76,23 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 		}
     });
 
-	const changeCheckedState = (index: number) => {
+    const [projectTasks, changeProjectTasks] = React.useState<
+        ProjectTaskType[]
+    >(props.SELECTED_PROJECT?.tasks || []);
 
-		let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
-        tempProjectTasks[index].checked = !tempProjectTasks[index].checked;
-        
-        props.toggleTaskState(projectTasks[index]._id, props.route.params.projectId, tempProjectTasks[index].checked);
-		changeProjectTasks(tempProjectTasks);
+    React.useEffect(() => {
+        if(props.SELECTED_PROJECT && props.SELECTED_PROJECT?.tasks !== projectTasks) {
+            changeProjectTasks(props.SELECTED_PROJECT?.tasks)
+        }
+    }, [props.ALL_PROJECTS])
+
+	const changeCheckedState = (index: number) => {
+        const taskId: string = props.SELECTED_PROJECT?.tasks[index]?._id ? props.SELECTED_PROJECT?.tasks[index]?._id : '';
+        const projectId: string = props.SELECTED_PROJECT ? props.SELECTED_PROJECT._id : '';
+        props.toggleTaskState(taskId, projectId, !props.SELECTED_PROJECT?.tasks[index].checked);
     };
 
 	const onTaskAdd = (task: { text: string; priority: TaskPriorityType }) => {
-        let tempProjectTasks: ProjectTaskType[] = [...projectTasks];
         
 		props.addTask({
             _id: makeId(16),
@@ -108,8 +102,6 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
         }, props.route.params.projectId);
-
-		changeProjectTasks(tempProjectTasks);
 
 		return true;
 	};
@@ -152,6 +144,9 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 								onCheckPress={() => changeCheckedState(i)}
 							></TaskItem>
 						))}
+                        {!projectTasks[0] ? (
+                            <ListEmpty>No tasks</ListEmpty>
+                        ) : null}
 					</TaskItemList>
 				</ProjectTaskScreenContent>
 			</BasicLayout>
@@ -183,6 +178,15 @@ const TaskScreenHeading = styled(Text)`
 
 const TaskItemList = styled(View)`
 	margin: ${hp('1%')}px;
+`;
+
+const ListEmpty = styled(Text)`
+    width: ${wp('100%')}px;
+    ${(props) => props.theme.fonts.size.delta};
+    color: ${(props) => props.theme.colors.textPrimary};
+    text-transform: uppercase;
+    padding: ${hp('2.5%')}px;
+    text-align: left;
 `;
 
 //----

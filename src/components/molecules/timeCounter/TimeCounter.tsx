@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import styled, { withTheme } from 'styled-components';
+import CounterContext from '/context/counter';
 
 import {
 	widthPercentageToDP as wp,
@@ -18,13 +19,31 @@ type PropsWithTheme = {
 //---- component
 
 const TimeCounter = (props: PropsWithTheme) => {
+	const { ActiveCounterRef, PauseCounterRef } = useContext(CounterContext);
+
+	const formatDoubleDigit = (a: number) => {
+		return String(a).length === 2 ? a : `0${a}`;
+	};
+
+	const returnTime = (counterRef: any) => {
+		let hh = ActiveCounterRef.hours
+			? String(formatDoubleDigit(ActiveCounterRef.hours)) + ':'
+			: '';
+		return (
+			hh +
+			String(formatDoubleDigit(counterRef.minutes)) +
+			':' +
+			String(formatDoubleDigit(counterRef.seconds))
+		);
+	};
+
 	return (
 		<TimeCounterContainer>
-            {/* <CounterIndicator><Text style={{color: "white"}}>i</Text></CounterIndicator> */}
-            <CounterWrapper>
-                <ActivityTime>00:00</ActivityTime>
-                <PauseTime>00</PauseTime>
-            </CounterWrapper>
+			{/* <CounterIndicator><Text style={{color: "white"}}>i</Text></CounterIndicator> */}
+			<CounterWrapper>
+				<ActivityTime>{returnTime(ActiveCounterRef)}</ActivityTime>
+				<PauseTime>{returnTime(PauseCounterRef)}</PauseTime>
+			</CounterWrapper>
 		</TimeCounterContainer>
 	);
 };
@@ -32,11 +51,11 @@ const TimeCounter = (props: PropsWithTheme) => {
 //---- styles
 
 const TimeCounterContainer = styled(View)`
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 50%;
-    height: 100%;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	width: 50%;
+	height: 100%;
 `;
 
 // const CounterIndicator = styled(View)`
@@ -44,20 +63,23 @@ const TimeCounterContainer = styled(View)`
 // `;
 
 const CounterWrapper = styled(View)`
-    flex: 4;
-    flex-direction: column;
+	flex: 4;
+	flex-direction: column;
     height: 100%;
-    padding-left: ${hp('1%')}px;
+    margin-top: ${-hp('1.5%')}px;
+	padding-left: ${hp('1%')}px;
 `;
 
 const ActivityTime = styled(Text)`
-    color: white;
-    font-size: ${hp('5%')}px;
+    ${(props) => props.theme.fonts.size.mega}
+	color: white;
 `;
 
 const PauseTime = styled(Text)`
-    color: white;
-    font-size: ${hp('2.5%')}px;
+    ${(props) => props.theme.fonts.size.alpha}
+    margin-top: ${-hp('2%')}px;
+    margin-left: ${wp('1%')}px;
+	color: white;
 `;
 
 //----

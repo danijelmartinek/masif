@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
+import CounterContext from '/context/counter';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '/screens/index';
@@ -24,13 +25,13 @@ import { selectProject, setProjectTheme } from '/redux/actions';
 //---- store
 
 const mapDispatch = {
-    selectProject: (index: number) => selectProject(index),
-    setProjectTheme: () => setProjectTheme()
+	selectProject: (index: number) => selectProject(index),
+	setProjectTheme: () => setProjectTheme()
 };
 const mapState = (state: StoreStateType) => ({
 	ALL_PROJECTS: state.ALL_PROJECTS
 });
-const connector = connect(mapState,mapDispatch);
+const connector = connect(mapState, mapDispatch);
 
 //---- types
 
@@ -44,19 +45,31 @@ type PropsWithTheme = Props &
 //---- component
 
 const ProjectList = (props: PropsWithTheme) => {
+	const { ActiveCounterRef, PauseCounterRef } = useContext(CounterContext);
+    const [projectActive, setProjectActive] = useState(false);
+    
+	React.useEffect(() => {
+		if (ActiveCounterRef.isRunning || PauseCounterRef.isRunning) {
+			setProjectActive(true);
+		} else {
+			setProjectActive(false);
+		}
+	}, [ActiveCounterRef.isRunning, PauseCounterRef.isRunning]);
 
-    const getLastProjectActivity = (project: ProjectType): string => {
-        if(project.activities[0]) {
-            return 'Last activity - xx/xx/xxxx'
-        } else {
-            return 'No activities yet'
-        }
-    }
+	const getLastProjectActivity = (project: ProjectType): string => {
+		if (project.activities[0]) {
+			return 'Last activity - xx/xx/xxxx';
+		} else {
+			return 'No activities yet';
+		}
+	};
 
-    const handleProjectSelect = (index: number) => {
-        props.selectProject(index);
-        props.setProjectTheme();
-    }
+	const handleProjectSelect = (index: number) => {
+		if (!projectActive) {
+			props.selectProject(index);
+			props.setProjectTheme();
+		}
+	};
 
 	return (
 		<ProjectListContainer>
@@ -72,7 +85,7 @@ const ProjectList = (props: PropsWithTheme) => {
 				</ProjectListAdd>
 			</ProjectListHeader>
 
-			<ProjectListWrapper>
+			<ProjectListWrapper disabled={projectActive}>
 				{props.ALL_PROJECTS?.map((project, i) => (
 					<ProjectListItem
 						key={Math.random() * i}
@@ -100,8 +113,8 @@ const ProjectList = (props: PropsWithTheme) => {
 						secondaryTextLineHeight={
 							props.theme.fonts.oSize.delta.lineHeight
 						}
-                        activeOpacity={0.5}
-                        onPress={() => handleProjectSelect(i)}
+						activeOpacity={projectActive ? 1 : 0.5}
+						onPress={() => handleProjectSelect(i)}
 					></ProjectListItem>
 				))}
 			</ProjectListWrapper>
@@ -118,10 +131,13 @@ const ProjectListContainer = styled(View)`
 	height: ${hp('60%')}px;
 `;
 
-const ProjectListWrapper = styled(ScrollView)`
+const ProjectListWrapper = styled(ScrollView)<{
+	disabled: boolean;
+}>`
 	width: ${wp('100%')}px;
 	height: ${hp('50%')}px;
 	margin-bottom: ${Constants.statusBarHeight}px;
+	opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 
 const ProjectListHeader = styled(View)`

@@ -13,7 +13,12 @@ const initialState: StoreStateType = {
     SELECTED_PROJECT: '',
     // LOG_INFO: getTemplateData("log"),
 
-    // REF_COUNTER: {}
+    // COUNTER: {
+    //     startTime: 0,
+    //     elapsedTime: 0,
+    //     activeTime: 0,
+    //     pauseTime: 0
+    // }
 }
 
 const Reducer = (state: StoreStateType = initialState, action: ActionType): StoreStateType => {

@@ -17,4 +17,11 @@ const makeId = (length: number): string => {
 	return result;
 };
 
-export { isEmpty, makeId };
+const hmsTos = (hh: number, mm: number, ss: number) => {
+    const hourSec = hh * 60 * 60;
+    const minuteSec = hh * 60;
+
+    return hourSec + minuteSec + ss;
+}
+
+export { isEmpty, makeId, hmsTos };

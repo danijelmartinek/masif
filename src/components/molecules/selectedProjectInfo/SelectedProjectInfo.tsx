@@ -93,7 +93,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 					iconColor={props.theme.project.colors.projectPrimary}
 				></Badge>
 			</SelectedProjectBadge>
-			<SelectedProjectName>Lorem ipsum</SelectedProjectName>
+            <SelectedProjectName>{props.SELECTED_PROJECT?.name}</SelectedProjectName>
 			<SelectedProjectDetails>
 				<SelectedProjectDetailsItem>
 					<DetailHeading>Start Date</DetailHeading>
@@ -113,7 +113,7 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 					<ActionIcon1Wrapper
 						onPress={() =>
 							props.navigation.navigate('ProjectTasks', {
-								projectId: props.SELECTED_PROJECT._id
+								projectId: props.SELECTED_PROJECT?._id
 							})
 						}
 					>

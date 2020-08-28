@@ -32,9 +32,9 @@ let Theme: ThemeType = {
     'dark': {
         label: 'dark',
         colors: {
-            primary: '#101424',
+            primary: '#0D0D0D',
             secondary: '#181e36',
-            tertiary: '#272b39',
+            tertiary: '#1D1D1D',
             accent: 'purple',
             textPrimary: "#ffffff",
             textSecondary: '#e5e5e5',

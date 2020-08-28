@@ -3,6 +3,9 @@ import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme, setProjectTheme } from '/redux/actions';
+import Constants from 'expo-constants';
+
+import Main from './Main';
 
 import MainScreenTaskList from '/components/organisms/mainScreenTaskList/';
 import MainScreenActions from '/components/organisms/mainScreenActions/';
@@ -20,11 +23,14 @@ import {
 	widthPercentageToDP as wp,
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 const mapState = (state: StoreStateType) => ({
     DEFAULT_THEME: state.DEFAULT_THEME,
     THEME_OPTIONS: state.THEME_OPTIONS,
-    ALL_PROJECTS: state.ALL_PROJECTS
+    ALL_PROJECTS: state.ALL_PROJECTS,
+    SELECTED_PROJECT_ID: state.SELECTED_PROJECT
 })
 
 const mapDispatch = {
@@ -34,7 +40,7 @@ const mapDispatch = {
 const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
-type Props = StackScreenProps<RootStackParamList, 'Main'>;
+type Props = StackScreenProps<RootStackParamList, 'Initial'>;
 type PropsWithTheme = Props &
 	PropsFromRedux & {
 		theme: SelectedTheme;
@@ -48,43 +54,33 @@ type StatusBarStyleType =
 const MainScreen = (props: PropsWithTheme) => {
 	const [statusBarTheme, setStatusBarTheme] = useState<StatusBarStyleType>(
 		'light-content'
-	);
+    );
 
-	const toggleTheme = () => {
-		if (props.theme.label === 'dark') {
-			props.setTheme(ThemeMode.LIGHT);
-			setStatusBarTheme('dark-content');
-		} else {
-			props.setTheme(ThemeMode.DARK);
-			setStatusBarTheme('light-content');
+    React.useEffect(()=> {
+        if(props.SELECTED_PROJECT_ID) {
+            props.navigation.navigate('Main');
         }
-        
-        // props.setProjectTheme();
-        // console.log(props.ALL_PROJECTS);
-	};
+    }, [props.SELECTED_PROJECT_ID])
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				alignItems: 'center',
-				justifyContent: 'center',
-				backgroundColor: props.theme.colors.primary,
-				position: 'absolute'
-			}}
-		>
-			<StatusBar
+        <View
+        style={{
+            flex: 1,
+            width: wp('100%'),
+            height: hp('100%') + Constants.statusBarHeight,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: props.theme.colors.primary,
+            position: 'absolute'
+        }}>
+            <StatusBar
 				translucent
 				backgroundColor="transparent"
 				barStyle={statusBarTheme}
 			/>
-            <MainScreenHeader navigation={props.navigation} route={props.route}></MainScreenHeader>
-			<MtGraphContainer></MtGraphContainer>
-			{/* <Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text> */}
-			{/* <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button> */}
-            
-            <MainScreenActions></MainScreenActions>
-            <MainScreenTaskList></MainScreenTaskList>
+            <TouchableOpacity onPress={() => props.navigation.navigate('NewProject')}>
+                <Text style={{color: 'white'}}>Go to New project</Text>
+            </TouchableOpacity>
 		</View>
 	);
 };
