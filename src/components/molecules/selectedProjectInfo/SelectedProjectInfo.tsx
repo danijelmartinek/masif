@@ -93,7 +93,11 @@ const SelectedProjectInfo = (props: PropsWithTheme) => {
 					iconColor={props.theme.project.colors.projectPrimary}
 				></Badge>
 			</SelectedProjectBadge>
-            <SelectedProjectName>{props.SELECTED_PROJECT?.name}</SelectedProjectName>
+			<SelectedProjectName>
+				{props.SELECTED_PROJECT?.name.length > 40
+					? props.SELECTED_PROJECT?.name.substring(0, 37) + '...'
+					: props.SELECTED_PROJECT?.name}
+			</SelectedProjectName>
 			<SelectedProjectDetails>
 				<SelectedProjectDetailsItem>
 					<DetailHeading>Start Date</DetailHeading>
@@ -164,10 +168,12 @@ const SelectedProjectBadge = styled(View)`
 `;
 
 const SelectedProjectName = styled(Text)`
+	width: ${wp('100%')}px;
 	${(props) => props.theme.fonts.size.beta};
 	color: ${(props) => props.theme.colors.textPrimary};
 	height: ${hp('5%')}px;
 	font-weight: bold;
+	text-align: center;
 `;
 
 const SelectedProjectDetails = styled(View)`
@@ -179,6 +185,7 @@ const SelectedProjectDetails = styled(View)`
 `;
 
 const SelectedProjectDetailsItem = styled(View)`
+    flex: 1;
 	align-items: center;
 	justify-content: center;
 `;

@@ -31,8 +31,9 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<CounterProvider>
+
 					<Theme>
+                    <CounterProvider>
 						<OptionsModalProvider>
 							<NavigationContainer>
 								<RootStack.Navigator
@@ -107,8 +108,9 @@ export default function App() {
 								</RootStack.Navigator>
 							</NavigationContainer>
 						</OptionsModalProvider>
+                        </CounterProvider>
 					</Theme>
-				</CounterProvider>
+	
 			</PersistGate>
 		</Provider>
 	);

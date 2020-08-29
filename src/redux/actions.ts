@@ -74,6 +74,23 @@ export function removeProject(projectId: string): ActionType {
 	};
 }
 
+export function editProject(editedProject: ProjectType): ActionType {
+	return {
+		type: 'EDIT_PROJECT',
+		editProject: (allProjects: ProjectType[]) => {
+			let projects = allProjects.map((pro) => {
+                if(pro._id === editedProject._id){
+                    pro.name = editedProject.name;
+                    pro.projectThemeOptions = editedProject.projectThemeOptions;
+                }
+                return pro
+            })
+
+			return projects;
+		}
+	};
+}
+
 export function selectProject(selectProjectIndex: number): ActionType {
 	return {
 		type: 'SELECT_PROJECT',

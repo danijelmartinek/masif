@@ -53,7 +53,7 @@ interface ThemeBasicsType {
             epsilon: FontSizeObject;
             zeta: FontSizeObject;
 
-            mili: FontSizeObject;
+            milli: FontSizeObject;
         },
 
         size: {
@@ -66,7 +66,7 @@ interface ThemeBasicsType {
             delta: string;
             epsilon: string;
             zeta:  string;
-            mili:  string;
+            milli:  string;
         }
     },
 

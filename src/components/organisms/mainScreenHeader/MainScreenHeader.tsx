@@ -55,13 +55,13 @@ const MainScreenHeader = (props: PropsWithTheme) => {
 							}
 						></Badge>
 					</MenuButton>
-					<MenuButton>
+					{/* <MenuButton>
 						<Icon
 							type={'hamburger'}
 							color={props.theme.colors.textPrimary}
 							size={hp('6%')}
 						></Icon>
-					</MenuButton>
+					</MenuButton> */}
 				</MenuButtonsWrapper>
 			</HeaderWrapper>
 			<ProjectSheet
@@ -91,11 +91,12 @@ const MenuButtonsWrapper = styled(View)`
 	width: 50%;
 	flex-direction: row;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 const MenuButton = styled(TouchableOpacity)`
-	padding: ${hp('1.5%')}px;
+    padding: ${hp('1.5%')}px;
+    align-self: center;
 `;
 
 //----

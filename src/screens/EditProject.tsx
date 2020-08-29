@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
-import { addProject, selectProject, setProjectTheme } from '/redux/actions';
+import { editProject, selectProject, setProjectTheme } from '/redux/actions';
 import { getSelectedProject } from '/redux/selectors';
 
 import { StackScreenProps } from '@react-navigation/stack';
@@ -17,8 +17,6 @@ import ProjectIconSelect from '/components/molecules/projectIconSelect/';
 
 import { ProjectColorsType } from '/components/molecules/projectColorSelect/index.tsx';
 import { ProjectIconType } from '/components/molecules/projectIconSelect/index.tsx';
-
-import { makeId } from '/utils/helpers';
 
 import { providedColors as providedColorsE, providedIcons as providedIconsE } from '/styles/newProjectOptions.ts';
 import { ProjectType } from '/redux/types';
@@ -37,7 +35,7 @@ const mapState = (state: StoreStateType) => ({
 	SELECTED_PROJECT: getSelectedProject(state)
 });
 const mapDispatch = {
-    addProject: (project: ProjectType) => addProject(project),
+    editProject: (project: ProjectType) => editProject(project),
     selectProject: (index: number) => selectProject(index),
     setProjectTheme: () => setProjectTheme()
 };
@@ -128,13 +126,14 @@ const EditProjectScreen = (props: PropsWithTheme) => {
 
 	const [editProjectName, onProjectNameChangeText] = React.useState(props.route.params.name);
 
-	const saveEditProject = () => {
+	const saveEditedProject = () => {
 		if (!editProjectName) {
 			setInputError(true);
 		} else {
-			setInputError(false);
-			props.addProject({
-                _id: makeId(16),
+            setInputError(false);
+            
+			props.editProject({
+                _id: props.route.params._id,
                 name: editProjectName,
                 projectThemeOptions: {
                     colors: {
@@ -143,17 +142,14 @@ const EditProjectScreen = (props: PropsWithTheme) => {
                     },
                     icon: editProjectBadge.icon
                 },
-                tasks: [],
-                activities: [],
-                graphPoints: [],
-                createdAt: Date.now(),
+                tasks: props.route.params.tasks,
+                activities: props.route.params.activities,
+                graphPoints: props.route.params.graphPoints,
+                createdAt: props.route.params.createdAt,
                 updatedAt: Date.now()
             });
 
-            if(!props.SELECTED_PROJECT) {
-                props.selectProject(0);
-                props.setProjectTheme();
-            }
+            props.setProjectTheme();
 
             props.navigation.goBack();
 		}
@@ -177,7 +173,7 @@ const EditProjectScreen = (props: PropsWithTheme) => {
 					props.theme.colors.semantic.success,
 					0.5
 				]}
-				headerActionButtonOnPress={() => saveEditProject()}
+				headerActionButtonOnPress={() => saveEditedProject()}
 			>
 				<EditProjectContent>
 					<BadgeWrapper>

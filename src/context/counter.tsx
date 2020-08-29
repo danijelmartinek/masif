@@ -1,90 +1,129 @@
 import { useKeepAwake } from 'expo-keep-awake';
+import { WebView } from 'react-native-webview';
 
-import React, { useState } from 'react';
-import { useStopwatch } from 'react-timer-hook';
-
-import { hmsTos } from '/utils/helpers';
+import React, { useState, useRef } from 'react';
+import { View } from 'react-native';
 
 const CounterContext = React.createContext({});
 
+const getCurrentTimeFromEpoch = () => {
+	let d = new Date();
+	return Math.round(d.getTime() / 1000);
+};
+
 export const CounterProvider = (props: any) => {
-    useKeepAwake();
-  
-    const [activityInfo, setActivityInfo] = useState({
-        startTime: 0,
-        activeTime: 0,
-        startPauseTime: 0,
-        pauseTime: 0,
-        pauseSegments: []
-    });
+	useKeepAwake();
 
-    const ActiveCounterRef = useStopwatch();
-    const PauseCounterRef = useStopwatch();
-    const PauseSegmentCounterRef = useStopwatch();
+	const [startTime, setStartTime] = useState(getCurrentTimeFromEpoch());
+	const [webViewKey, setWebViewKey] = useState(Math.random());
 
-    const startCounter = (callback = () => true) => {
-        if(!ActiveCounterRef.isRunning && !PauseCounterRef.isRunning) {
-            setActivityInfo({
-                ...activityInfo,
-                startTime: Date.now(),
-            })
+	const [initialActiveVal, setInitialActiveVal] = useState(0);
+	const [initialPauseVal, setInitialPauseVal] = useState(0);
 
-            ActiveCounterRef.start();
+	const [activeCounter, setActiveCounter] = useState(0);
+	const [pauseCounter, setPauseCounter] = useState(0);
 
-            callback();
+	const [isEnabled, setIsEnabled] = useState(false);
+	const [isActive, setIsActive] = useState(false);
+
+	const [activityInfo, setActivityInfo] = useState({
+		startTime: 0,
+		activeTime: 0,
+		startPauseTime: 0,
+		pauseTime: 0,
+		pauseSegments: []
+	});
+
+	const activeCounterJs = `
+        setInterval(() => {
+            let d = new Date();
+            window.ReactNativeWebView.postMessage(Math.round(d.getTime() / 1000));
+        }, 1000)
+    `;
+
+	const handleCounterCallback = (e: any) => {
+		if (isActive) {
+			setActiveCounter(
+				initialActiveVal + (Number(e.nativeEvent.data) - startTime)
+			);
+		} else {
+			setPauseCounter(
+				initialPauseVal + Number(e.nativeEvent.data) - startTime
+			);
+		}
+	};
+
+	const startCounter = (callback = () => true) => {
+		if (!isActive) {
+			if (!isEnabled) {
+				setIsEnabled(true);
+			}
+
+			setStartTime(getCurrentTimeFromEpoch());
+			setIsActive(true);
+			setInitialPauseVal(pauseCounter);
+		}
+	};
+
+	const startPause = (callback = () => true) => {
+        if (isActive) {
+            setStartTime(getCurrentTimeFromEpoch());
+            setIsActive(false);
+            setInitialActiveVal(activeCounter);
         }
-    }
+	};
 
-    const stopCounter = (callback = () => true) => {
-        setActivityInfo({
-            ...activityInfo,
-            activeTime: hmsTos(ActiveCounterRef.hours, ActiveCounterRef.minutes, ActiveCounterRef.seconds)
-        })
+	const stopCounter = (callback = () => true) => {
+		if (isEnabled) {
+			setWebViewKey(Math.random());
+			setIsEnabled(false);
+		}
 
-        if(ActiveCounterRef.isRunning || PauseCounterRef.isRunning) {
-            ActiveCounterRef.pause();
-            ActiveCounterRef.reset();
-            PauseCounterRef.reset();
+		setActiveCounter(0);
+		setPauseCounter(0);
+		setInitialActiveVal(0);
+		setInitialPauseVal(0);
+		setIsActive(false);
+	};
 
-            callback();
-        }
-    }
-
-    const startPause = (callback = () => true) => {
-        if(ActiveCounterRef.isRunning && !PauseCounterRef.isRunning) {
-            setActivityInfo({
-                ...activityInfo,
-                startPauseTime: Date.now()
-            })
-
-            ActiveCounterRef.pause();
-            PauseCounterRef.start();
-            PauseSegmentCounterRef.start()
-
-            callback();
-        }
-    }
-
-    const stopPause = (callback = () => true) => {
-        if(!ActiveCounterRef.isRunning && PauseCounterRef.isRunning) {
-            setActivityInfo({
-                ...activityInfo,
-                pauseTime: hmsTos(PauseCounterRef.hours, PauseCounterRef.minutes, PauseCounterRef.seconds)
-            })
-
-            PauseCounterRef.pause();
-            PauseSegmentCounterRef.pause();
-            PauseSegmentCounterRef.reset()
-            ActiveCounterRef.start();
-
-            callback();
-        }
-    }
+	const stopPause = (callback = () => true) => {
+		startCounter();
+	};
 
 	return (
-		<CounterContext.Provider value={{ startCounter, stopCounter, startPause, stopPause, ActiveCounterRef, PauseCounterRef }}>
-			{props.children}
-		</CounterContext.Provider>
+		<React.Fragment>
+			<CounterContext.Provider
+				value={{
+					startCounter,
+					stopCounter,
+					startPause,
+					stopPause,
+					activeCounter,
+					pauseCounter,
+					isEnabled
+				}}
+			>
+				{props.children}
+
+				{isEnabled ? (
+					<View
+						style={{
+							flex: 1,
+							display: 'none',
+							position: 'absolute',
+							opacity: 0
+						}}
+					>
+						<WebView
+							key={webViewKey}
+							injectedJavaScript={activeCounterJs}
+							source={{ html: '<html><body></body></html>' }}
+							onMessage={(e) => handleCounterCallback(e)}
+						/>
+					</View>
+				) : null}
+			</CounterContext.Provider>
+		</React.Fragment>
 	);
 };
 

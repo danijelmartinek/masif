@@ -39,6 +39,11 @@ const Reducer = (state: StoreStateType = initialState, action: ActionType): Stor
                 ...state,
                 ALL_PROJECTS: action.addProject(state.ALL_PROJECTS)
             }
+        case 'EDIT_PROJECT':
+            return {
+                ...state,
+                ALL_PROJECTS: action.editProject(state.ALL_PROJECTS)
+            }
         case 'REMOVE_PROJECT':
             return {
                 ...state,

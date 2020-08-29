@@ -90,7 +90,7 @@ const MainScreenActions = (props: PropsWithTheme) => {
 			<MtButton
                 size={props.theme.fonts.oSize.gamma.fontSize}
 				icon={'hiking'}
-				activeOpacity={1}
+				activeOpacity={0.5}
 				active={actionStates[1]}
                 title={getStartButtonText()}
                 textColor={props.theme.colors.primary}

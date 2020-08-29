@@ -104,7 +104,7 @@ let Theme: ThemeType = {
                 lineHeight: hp('2.25%')
             }, //0
 
-            mili: {
+            milli: {
                 fontSize: hp('1.1%'), 
                 lineHeight: hp('1.65%')
             } //-.4
@@ -147,7 +147,7 @@ let Theme: ThemeType = {
                 font-size: ${hp('1.5%')}px;
                 line-height: ${hp('2.25%')}px;
             `, //0
-            mili: `
+            milli: `
                 font-size: ${hp('1.1%')}px;
                 line-height: ${hp('1.65%')}px;
             `, //-.4

@@ -25,6 +25,7 @@ import {
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
 import { makeId } from '/utils/helpers';
+import { hexToRGBA } from '/utils/colorFormat';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
 import { StoreStateType, ProjectTaskType } from '/redux/types';
@@ -143,6 +144,8 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 					<Spacer width={wp('100%')} height={hp('2.5%')}></Spacer>
 
 					<TaskScreenHeading>Tasks</TaskScreenHeading>
+                    <InfoLabel>long press task for options</InfoLabel>
+
 					<TaskItemList>
 						{projectTasks.map((task, i) => (
 							<TaskItem
@@ -199,6 +202,15 @@ const ListEmpty = styled(Text)`
     color: ${(props) => props.theme.colors.textPrimary};
     text-transform: uppercase;
     padding: ${hp('2.5%')}px;
+    text-align: left;
+`;
+
+const InfoLabel = styled(Text)`
+    width: ${wp('100%')}px;
+    ${(props) => props.theme.fonts.size.zeta};
+    margin-left: ${wp('8%')}px;
+    color: ${(props) => hexToRGBA(props.theme.colors.textPrimary, 0.25)};
+    text-transform: uppercase;
     text-align: left;
 `;
 

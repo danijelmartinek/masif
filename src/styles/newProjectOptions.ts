@@ -38,7 +38,7 @@ const providedIcons: ProjectIconType[] = [
 	{ type: 'hiking', selected: true },
 	{ type: 'camp_fire', selected: false },
 	{ type: 'camp_tent', selected: false },
-	{ type: 'close', selected: false }
+	{ type: 'flame', selected: false }
 ];
 
 export {

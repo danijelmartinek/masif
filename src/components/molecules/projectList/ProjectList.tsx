@@ -49,16 +49,16 @@ type PropsWithTheme = Props &
 const ProjectList = (props: PropsWithTheme) => {
     const optionsModal = useContext(OptionsModalContext);
 
-	const { ActiveCounterRef, PauseCounterRef } = useContext(CounterContext);
+	const { isEnabled } = useContext(CounterContext);
     const [projectActive, setProjectActive] = useState(false);
     
 	React.useEffect(() => {
-		if (ActiveCounterRef.isRunning || PauseCounterRef.isRunning) {
+		if (isEnabled) {
 			setProjectActive(true);
 		} else {
 			setProjectActive(false);
 		}
-	}, [ActiveCounterRef.isRunning, PauseCounterRef.isRunning]);
+	}, [isEnabled]);
 
 	const getLastProjectActivity = (project: ProjectType): string => {
 		if (project.activities[0]) {
@@ -86,7 +86,7 @@ const ProjectList = (props: PropsWithTheme) => {
         {
             item: 'Delete',
             f: (optionsRef, data) => {
-                props.removeProject(project._id);
+                props.removeProject(data._id);
                 optionsRef.closeOptions();
             }
         }
@@ -106,6 +106,8 @@ const ProjectList = (props: PropsWithTheme) => {
                         ></Icon>
                     </ProjectListAdd>
                 </ProjectListHeader>
+
+                <InfoLabel>long press project for options</InfoLabel>
 
                 <ProjectListWrapper disabled={projectActive}>
                     {props.ALL_PROJECTS?.map((project, i) => (
@@ -137,7 +139,7 @@ const ProjectList = (props: PropsWithTheme) => {
                             }
                             activeOpacity={projectActive ? 1 : 0.5}
                             onPress={() => handleProjectSelect(i)}
-                            onLongPress={() => optionsModal.openOptions(project, options)}
+                            onLongPress={() => !projectActive ? optionsModal.openOptions(project, options) : true}
                         ></ProjectListItem>
                     ))}
                 </ProjectListWrapper>
@@ -183,7 +185,14 @@ const ProjectListAdd = styled(TouchableOpacity)`
 	width: ${wp('10%')}px;
 	align-items: center;
 	justify-content: center;
-	padding-right: ${hp('2%')}px;
+	padding-right: ${wp('2%')}px;
+`;
+
+const InfoLabel = styled(Text)`
+    ${(props) => props.theme.fonts.size.zeta};
+    margin-left: ${wp('3.75%')}px;
+    color: ${(props) => hexToRGBA(props.theme.colors.textPrimary, 0.25)};
+    text-transform: uppercase;
 `;
 
 //----
