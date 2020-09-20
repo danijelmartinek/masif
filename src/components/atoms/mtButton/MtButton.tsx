@@ -33,18 +33,21 @@ const MtButton = (props: Props) => {
                 activeBackgroundColor={props.disabled ? 'gray' : props.activeBackgroundColor}
                 fullWidth={props.fullWidth}
 			>
-				<Icon
-                    type={props.icon}
-                    size={props.size * 1.5}
-					color={
-						props.active ? props.activeTextColor : props.textColor
-					}
-				></Icon>
+                {props.icon !== '' ? (
+                    <Icon
+                        type={props.icon}
+                        size={props.size * 1.5}
+                        color={
+                            props.active ? props.activeTextColor : props.textColor
+                        }
+                    ></Icon>
+                ) : null}
 				<MtButtonText
                     size={props.size}
 					active={props.active}
 					textColor={props.textColor}
-					activeTextColor={props.activeTextColor}
+                    activeTextColor={props.activeTextColor}
+                    fullWidth={props.fullWidth}
 				>
 					{props.title}
 				</MtButtonText>
@@ -83,22 +86,32 @@ const MtButtonWrapper = styled(View)<{
     width: ${(props) => props.fullWidth ? '100%' : props.size * 7.5 + 'px'};
     height: ${(props) => props.size * 2.5}px;
 	background-color: ${(props) =>
-		props.active ? props.activeBackgroundColor : props.backgroundColor};
+        props.active ? props.activeBackgroundColor : props.backgroundColor};
 `;
 
 const MtButtonText = styled(Text)<{
     size: number,
 	active: boolean,
 	textColor: string,
-	activeTextColor: string
+    activeTextColor: string,
+    fullWidth: boolean
 }>`
+    ${(props) => props.fullWidth ? `
+        width: 100%;
+        text-align: center;
+    ` : null}
+    
 	padding-left: ${(props) => props.size * 0.05}px;
 	color: ${(props) =>
 		props.active ? props.activeTextColor : props.textColor};
 	font-size: ${(props) => props.size}px;
-	font-weight: bold;
+    font-weight: bold;
 `;
 
 //----
 
 export default MtButton;
+
+
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 

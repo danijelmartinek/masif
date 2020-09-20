@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import Constants from 'expo-constants';
 
@@ -55,13 +55,6 @@ const MainScreenHeader = (props: PropsWithTheme) => {
 							}
 						></Badge>
 					</MenuButton>
-					{/* <MenuButton>
-						<Icon
-							type={'hamburger'}
-							color={props.theme.colors.textPrimary}
-							size={hp('6%')}
-						></Icon>
-					</MenuButton> */}
 				</MenuButtonsWrapper>
 			</HeaderWrapper>
 			<ProjectSheet
@@ -90,15 +83,18 @@ const HeaderWrapper = styled(View)`
 const MenuButtonsWrapper = styled(View)`
 	width: 50%;
 	flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-start;
+	justify-content: flex-end;
+	align-items: flex-start;
 `;
 
 const MenuButton = styled(TouchableOpacity)`
-    padding: ${hp('1.5%')}px;
-    align-self: center;
+	padding: ${hp('1.5%')}px;
+	align-self: center;
 `;
 
 //----
 
 export default withTheme(MainScreenHeader);
+
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 

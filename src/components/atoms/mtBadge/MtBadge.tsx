@@ -1,3 +1,6 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import * as React from 'react';
 import Svg, { G, Path, Defs, ClipPath } from 'react-native-svg';
 import Icon from '/components/atoms/icon/';

@@ -18,6 +18,7 @@ import {
 	heightPercentageToDP as hp
 } from '/utils/dimensions';
 import { hexToRGBA } from '/utils/colorFormat';
+import { humanFormat } from '/utils/time';
 
 import { SelectedTheme } from '/styles/types';
 import { StoreStateType, ProjectType } from '/redux/types';
@@ -61,10 +62,10 @@ const ProjectList = (props: PropsWithTheme) => {
 	}, [isEnabled]);
 
 	const getLastProjectActivity = (project: ProjectType): string => {
-		if (project.activities[0]) {
-			return 'Last activity - xx/xx/xxxx';
+		if (project.sessions[0]) {
+			return `Last activity - ${humanFormat(project.sessions[project.sessions.length - 1].endTime)}`;
 		} else {
-			return 'No activities yet';
+			return `No activity yet`;
 		}
 	};
 

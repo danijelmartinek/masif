@@ -1,5 +1,6 @@
 {
 	"main": "index.js",
+	"author": "Danijel Martinek <danijel@martinek.xyz>",
 	"scripts": {
 		"android": "react-native run-android",
 		"ios": "react-native run-ios",
@@ -17,8 +18,9 @@
 		"@types/styled-components": "^5.1.2",
 		"expo": "^37.0.0",
 		"expo-keep-awake": "8.1.0",
-		"expo-linear-gradient": "^8.2.1",
+		"expo-linear-gradient": "~8.1.0",
 		"expo-updates": "^0.2.14",
+		"luxon": "^1.25.0",
 		"moment": "^2.27.0",
 		"react": "16.9.0",
 		"react-dom": "16.9.0",

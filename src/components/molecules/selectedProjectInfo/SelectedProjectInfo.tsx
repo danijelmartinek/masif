@@ -5,6 +5,7 @@ import styled, { withTheme } from 'styled-components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import moment from 'moment';
+import { Duration } from 'luxon';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '/screens/index';
@@ -48,17 +49,19 @@ type PropsWithTheme = Props &
 
 const SelectedProjectInfo = (props: PropsWithTheme) => {
 	const getDurationSum = (): string => {
-		if (props.SELECTED_PROJECT?.activities[0]) {
-			return `Ø`;
+		if (props.SELECTED_PROJECT?.sessions[0]) {
+            return Duration.fromObject({
+                seconds: props.SELECTED_PROJECT.sessions.reduce((acc, sess) => acc + sess.totalSessionTime, 0)
+            }).toFormat('hh:mm:ss')
 		} else {
 			return `Ø`;
 		}
 	};
 
 	const getStartDate = (): string => {
-		if (props.SELECTED_PROJECT?.activities[0]) {
+		if (props.SELECTED_PROJECT?.sessions[0]) {
 			return moment(
-				props.SELECTED_PROJECT.activities[0].startTime
+				props.SELECTED_PROJECT.sessions[0].startTime
 			).format('DD/MM/YYYY');
 		} else {
 			return `Ø`;

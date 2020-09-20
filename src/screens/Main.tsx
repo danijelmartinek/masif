@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
-import styled, { withTheme } from 'styled-components';
+import { View, StatusBar } from 'react-native';
+import { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme, setProjectTheme } from '/redux/actions';
 
@@ -15,11 +15,6 @@ import { RootStackParamList } from './index';
 
 import { SelectedTheme, ThemeMode } from '/styles/types';
 import { StoreStateType } from '/redux/types'
-
-import {
-	widthPercentageToDP as wp,
-	heightPercentageToDP as hp
-} from '/utils/dimensions';
 
 const mapState = (state: StoreStateType) => ({
     DEFAULT_THEME: state.DEFAULT_THEME,
@@ -39,29 +34,12 @@ type PropsWithTheme = Props &
 	PropsFromRedux & {
 		theme: SelectedTheme;
 	};
-type StatusBarStyleType =
-	| 'light-content'
-	| 'dark-content'
-	| 'default'
-	| undefined;
 
 const MainScreen = (props: PropsWithTheme) => {
-	const [statusBarTheme, setStatusBarTheme] = useState<StatusBarStyleType>(
+
+    const [statusBarTheme, setStatusBarTheme] = useState<StatusBarStyleType>(
 		'light-content'
 	);
-
-	const toggleTheme = () => {
-		if (props.theme.label === 'dark') {
-			props.setTheme(ThemeMode.LIGHT);
-			setStatusBarTheme('dark-content');
-		} else {
-			props.setTheme(ThemeMode.DARK);
-			setStatusBarTheme('light-content');
-        }
-        
-        // props.setProjectTheme();
-        // console.log(props.ALL_PROJECTS);
-	};
 
 	return (
 		<View
@@ -80,17 +58,12 @@ const MainScreen = (props: PropsWithTheme) => {
 			/>
             <MainScreenHeader navigation={props.navigation} route={props.route}></MainScreenHeader>
 			<MtGraphContainer></MtGraphContainer>
-			{/* <Text style={{color: props.theme.colors.textPrimary}}>Lorem Ipsum</Text> */}
-			{/* <Button title="Toggle Theme" onPress={() => toggleTheme()}></Button> */}
             
             <MainScreenActions></MainScreenActions>
             <MainScreenTaskList></MainScreenTaskList>
 		</View>
 	);
 };
-
-//---- styles
-
 
 //----
 

@@ -1,3 +1,6 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,

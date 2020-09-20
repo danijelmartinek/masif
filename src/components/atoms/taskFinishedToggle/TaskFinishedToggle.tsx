@@ -71,3 +71,6 @@ const TaskFinishedToggleWrapper = styled(TouchableOpacity)<{
 //----
 
 export default TaskFinishedToggle;
+
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 

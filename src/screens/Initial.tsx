@@ -1,17 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
-import styled, { withTheme } from 'styled-components';
+import React from 'react';
+import { View } from 'react-native';
+import { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { setTheme, setProjectTheme } from '/redux/actions';
 import Constants from 'expo-constants';
-
-import Main from './Main';
-
-import MainScreenTaskList from '/components/organisms/mainScreenTaskList/';
-import MainScreenActions from '/components/organisms/mainScreenActions/';
-import MainScreenHeader from '/components/organisms/mainScreenHeader/'
-
-import MtGraphContainer from '/components/molecules/mtGraphContainer/';
 
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from './index';
@@ -51,9 +43,6 @@ type StatusBarStyleType =
 	| undefined;
 
 const MainScreen = (props: PropsWithTheme) => {
-	const [statusBarTheme, setStatusBarTheme] = useState<StatusBarStyleType>(
-		'light-content'
-    );
     
     React.useEffect(()=> {
         if(props.SELECTED_PROJECT_ID) {
@@ -63,18 +52,11 @@ const MainScreen = (props: PropsWithTheme) => {
         }
     }, [])
 
-	const toggleTheme = () => {
-		// if (props.theme.label === 'dark') {
-		// 	props.setTheme(ThemeMode.LIGHT);
-		// 	setStatusBarTheme('dark-content');
-		// } else {
-		// 	props.setTheme(ThemeMode.DARK);
-		// 	setStatusBarTheme('light-content');
-        // }
-        
-        // props.setProjectTheme();
-        // console.log(props.ALL_PROJECTS);
-	};
+    React.useEffect(()=> {
+        if(!props.SELECTED_PROJECT_ID) {
+            props.navigation.navigate('Hello');
+        }
+    }, [props.SELECTED_PROJECT_ID])
 
 	return (
         <View
@@ -90,9 +72,6 @@ const MainScreen = (props: PropsWithTheme) => {
 		</View>
 	);
 };
-
-//---- styles
-
 
 //----
 

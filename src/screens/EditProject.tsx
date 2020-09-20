@@ -146,7 +146,7 @@ const EditProjectScreen = (props: PropsWithTheme) => {
                 activities: props.route.params.activities,
                 graphPoints: props.route.params.graphPoints,
                 createdAt: props.route.params.createdAt,
-                updatedAt: Date.now()
+                updatedAt: new Date()
             });
 
             props.setProjectTheme();

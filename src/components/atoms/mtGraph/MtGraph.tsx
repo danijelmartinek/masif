@@ -1,4 +1,7 @@
-import * as React from 'react';
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 
 import Svg, { Path } from 'react-native-svg';
@@ -14,16 +17,35 @@ type PropsWithTheme = {
 };
 
 const MtGraph = (props: PropsWithTheme) => {
-	const maxAxes = getMaxPoints(props.points);
-	const closedPoints: MtGraphPointType[] = [
-		...props.points,
-		[// to finish graph to end, +25 because 25 start offset
-			props.points[props.points.length - 1][0] + 25,
-			props.points[props.points.length - 1][1]
-		],
-		[maxAxes.x + 25, -maxAxes.y],
-		[0, -maxAxes.y]
-    ];
+
+    const [propPoints, setPropPoints] = useState<MtGraphPointType[]>(props.points)
+
+    const [maxAxes, setMaxAxes] = useState(getMaxPoints(props.points));
+
+    const getClosedPoints = (): MtGraphPointType[] => {
+        return [
+            ...propPoints,
+            [// to finish graph to end, +25 because 25 start offset
+                propPoints[propPoints.length - 1][0] + 25,
+                propPoints[propPoints.length - 1][1]
+            ],
+            [maxAxes.x + 25, -maxAxes.y],
+            [0, -maxAxes.y]
+        ];
+    }
+
+    const [closedPoints, setClosedPoints] = useState<MtGraphPointType[]>(getClosedPoints());
+    
+    useEffect(() => {
+        if(JSON.stringify(props.points) !== JSON.stringify(propPoints)) {
+            setPropPoints(props.points);
+        }
+    }, [props.points])
+
+    useEffect(() => {
+        setMaxAxes(getMaxPoints(props.points));
+        setClosedPoints(getClosedPoints());
+    }, [propPoints])
 
 	return (
 		<View>

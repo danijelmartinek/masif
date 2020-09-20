@@ -1,3 +1,6 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import React, { FunctionComponent } from 'react';
 import { View } from 'react-native';
 import { IconProps } from './types';

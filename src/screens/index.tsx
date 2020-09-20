@@ -1,7 +1,6 @@
 import InitialScreen from './Initial';
 import HelloScreen from './Hello';
 import MainScreen from './Main';
-import ProjectScreen from './Project';
 import NewProjectScreen from './NewProject';
 import EditProjectScreen from './EditProject';
 import ProjectTaskScreen from './ProjectTasks';
@@ -12,7 +11,6 @@ export type RootStackParamList = {
 	Main: {};
 	NewProject: {};
 	EditProject: {};
-	Project: {};
 	ProjectTasks: {
 		projectId: string;
 	};
@@ -22,7 +20,6 @@ export {
 	InitialScreen,
 	HelloScreen,
 	MainScreen,
-	ProjectScreen,
     NewProjectScreen,
     EditProjectScreen,
 	ProjectTaskScreen

@@ -1,3 +1,6 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import React, { useState, useContext } from 'react';
 import {
 	View,
@@ -155,7 +158,7 @@ const ProjectTaskScreen = (props: PropsWithTheme) => {
 								checked={task.checked}
 								activeOpacity={0.5}
 								checkActiveOpacity={0.5}
-								onPress={() => console.log('press')}
+								onPress={() => changeCheckedState(i)}
 								onLongPress={() => optionsModal.openOptions(i, options)}
 								onCheckPress={() => changeCheckedState(i)}
 							></TaskItem>

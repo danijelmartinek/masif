@@ -1,3 +1,7 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
+
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -16,8 +20,7 @@ import {
 	MainScreen,
 	NewProjectScreen,
 	EditProjectScreen,
-	ProjectTaskScreen,
-	ProjectScreen
+	ProjectTaskScreen
 } from '/screens/';
 import Theme from '/styles/themeComponent/';
 
@@ -31,9 +34,8 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-
-					<Theme>
-                    <CounterProvider>
+				<Theme>
+					<CounterProvider>
 						<OptionsModalProvider>
 							<NavigationContainer>
 								<RootStack.Navigator
@@ -74,7 +76,7 @@ export default function App() {
 											...TransitionPresets.SlideFromRightIOS
 										}}
 									/>
-                                    <RootStack.Screen
+									<RootStack.Screen
 										name="EditProject"
 										component={EditProjectScreen}
 										initialParams={{}}
@@ -96,21 +98,11 @@ export default function App() {
 											...TransitionPresets.SlideFromRightIOS
 										}}
 									/>
-									<RootStack.Screen
-										name="Project"
-										component={ProjectScreen}
-										initialParams={{}}
-										options={{
-											headerShown: false,
-											gestureDirection: 'horizontal'
-										}}
-									/>
 								</RootStack.Navigator>
 							</NavigationContainer>
 						</OptionsModalProvider>
-                        </CounterProvider>
-					</Theme>
-	
+					</CounterProvider>
+				</Theme>
 			</PersistGate>
 		</Provider>
 	);

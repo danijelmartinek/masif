@@ -1,5 +1,8 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import styled, { withTheme } from 'styled-components';
 import { connect, ConnectedProps } from 'react-redux';
 import { addProject, selectProject, setProjectTheme } from '/redux/actions';
@@ -124,10 +127,9 @@ const NewProjectScreen = (props: PropsWithTheme) => {
                     icon: newProjectBadge.icon
                 },
                 tasks: [],
-                activities: [],
-                graphPoints: [],
-                createdAt: Date.now(),
-                updatedAt: Date.now()
+                sessions: [],
+                createdAt: new Date(),
+                updatedAt: new Date()
             });
 
             if(!props.SELECTED_PROJECT) {

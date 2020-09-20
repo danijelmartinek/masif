@@ -1,20 +1,28 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 import { useKeepAwake } from 'expo-keep-awake';
 import { WebView } from 'react-native-webview';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 
 const CounterContext = React.createContext({});
 
-const getCurrentTimeFromEpoch = () => {
-	let d = new Date();
-	return Math.round(d.getTime() / 1000);
+const getCurrentTimeFromEpoch = (d: Date) => {
+	return d.getTime() / 1000;
+};
+
+const roundTo3Dec = (num: number): number => {
+	return Math.round(num * 1000) / 1000;
 };
 
 export const CounterProvider = (props: any) => {
 	useKeepAwake();
 
-	const [startTime, setStartTime] = useState(getCurrentTimeFromEpoch());
+	const [timerStartTimeRef, setTimerStartTimeRef] = useState(
+		getCurrentTimeFromEpoch(new Date())
+	);
 	const [webViewKey, setWebViewKey] = useState(Math.random());
 
 	const [initialActiveVal, setInitialActiveVal] = useState(0);
@@ -26,54 +34,107 @@ export const CounterProvider = (props: any) => {
 	const [isEnabled, setIsEnabled] = useState(false);
 	const [isActive, setIsActive] = useState(false);
 
-	const [activityInfo, setActivityInfo] = useState({
-		startTime: 0,
+	const [counterThreadTime, setCounterThreadTime] = useState('');
+
+	const [sessionInfo, setSessionInfo] = useState({
+		startTime: '',
 		activeTime: 0,
-		startPauseTime: 0,
+		endTime: '',
 		pauseTime: 0,
-		pauseSegments: []
+		sessionSegments: [],
+		pauseSegments: [],
+		totalSessionTime: 0
+	});
+
+	const [sessionSegment, setSessionSegment] = useState({
+		sessionSegmentStartTime: '',
+		sessionSegmentTime: 0,
+		sessionSegmentEndTime: ''
+	});
+
+	const [pauseSegment, setPauseSegment] = useState({
+		pauseSegmentStartTime: '',
+		pauseSegmentTime: 0,
+		pauseSegmentEndTime: ''
 	});
 
 	const activeCounterJs = `
         setInterval(() => {
-            let d = new Date();
-            window.ReactNativeWebView.postMessage(Math.round(d.getTime() / 1000));
+            window.ReactNativeWebView.postMessage(new Date().toISOString());
         }, 1000)
     `;
 
 	const handleCounterCallback = (e: any) => {
 		if (isActive) {
+			setCounterThreadTime(e.nativeEvent.data);
 			setActiveCounter(
-				initialActiveVal + (Number(e.nativeEvent.data) - startTime)
+				initialActiveVal +
+					roundTo3Dec(
+						new Date(e.nativeEvent.data).getTime() / 1000 -
+							timerStartTimeRef
+					)
 			);
 		} else {
+			setCounterThreadTime(e.nativeEvent.data);
 			setPauseCounter(
-				initialPauseVal + Number(e.nativeEvent.data) - startTime
+				initialPauseVal +
+					roundTo3Dec(
+						new Date(e.nativeEvent.data).getTime() / 1000 -
+							timerStartTimeRef
+					)
 			);
 		}
 	};
 
 	const startCounter = (callback = () => true) => {
 		if (!isActive) {
+			let cDate = new Date();
+
 			if (!isEnabled) {
 				setIsEnabled(true);
+				setSessionInfo({
+					...sessionInfo,
+					startTime: cDate.toISOString()
+				});
 			}
 
-			setStartTime(getCurrentTimeFromEpoch());
+			setSessionSegment({
+				...sessionSegment,
+				sessionSegmentStartTime: cDate.toISOString()
+			});
+
+			setTimerStartTimeRef(getCurrentTimeFromEpoch(cDate));
 			setIsActive(true);
 			setInitialPauseVal(pauseCounter);
 		}
 	};
 
 	const startPause = (callback = () => true) => {
-        if (isActive) {
-            setStartTime(getCurrentTimeFromEpoch());
-            setIsActive(false);
-            setInitialActiveVal(activeCounter);
-        }
+		if (isActive) {
+			let cDate = new Date();
+			const cTimeFEpoh = getCurrentTimeFromEpoch(cDate);
+
+			setTimerStartTimeRef(cTimeFEpoh);
+			setIsActive(false);
+			setInitialActiveVal(activeCounter);
+
+			setPauseSegment({
+				...pauseSegment,
+				pauseSegmentStartTime: cDate.toISOString()
+			});
+
+			setSessionSegment({
+				...sessionSegment,
+				sessionSegmentTime:
+					(Date.parse(counterThreadTime) -
+						Date.parse(sessionSegment.sessionSegmentStartTime)) /
+					1000,
+				sessionSegmentEndTime: counterThreadTime
+			});
+		}
 	};
 
-	const stopCounter = (callback = () => true) => {
+	const stopCounter = (callback = (session: {}) => true) => {
 		if (isEnabled) {
 			setWebViewKey(Math.random());
 			setIsEnabled(false);
@@ -84,11 +145,125 @@ export const CounterProvider = (props: any) => {
 		setInitialActiveVal(0);
 		setInitialPauseVal(0);
 		setIsActive(false);
+
+		const getSessionSegment = () => {
+			if (sessionSegment.sessionSegmentStartTime) {
+				return {
+					...sessionSegment,
+					sessionSegmentTime:
+						(Date.parse(counterThreadTime) -
+							Date.parse(
+								sessionSegment.sessionSegmentStartTime
+							)) /
+						1000,
+					sessionSegmentEndTime: counterThreadTime
+				};
+			} else {
+				return null;
+			}
+		};
+
+		const getPauseSegment = () => {
+			if (pauseSegment.pauseSegmentStartTime) {
+				return {
+					...pauseSegment,
+					pauseSegmentTime:
+						(Date.parse(counterThreadTime) -
+							Date.parse(pauseSegment.pauseSegmentStartTime)) /
+						1000,
+					pauseSegmentEndTime: counterThreadTime
+				};
+			} else {
+				return null;
+			}
+		};
+
+		const sessionObject = {
+			...sessionInfo,
+			activeTime: activeCounter,
+			endTime: counterThreadTime,
+			pauseTime: pauseCounter,
+			sessionSegments: [
+				...sessionInfo.sessionSegments,
+				getSessionSegment()
+			].filter((a) => a !== null),
+			pauseSegments: [
+				...sessionInfo.pauseSegments,
+				getPauseSegment()
+			].filter((a) => a !== null),
+			totalSessionTime: activeCounter + pauseCounter
+		};
+
+		setSessionInfo(sessionObject);
+
+		callback(sessionObject);
 	};
 
 	const stopPause = (callback = () => true) => {
 		startCounter();
+
+		setPauseSegment({
+			...pauseSegment,
+			pauseSegmentTime:
+				(Date.parse(counterThreadTime) -
+					Date.parse(pauseSegment.pauseSegmentStartTime)) /
+				1000,
+			pauseSegmentEndTime: counterThreadTime
+		});
 	};
+
+	// session segment handler
+
+	useEffect(() => {
+		if (sessionSegment.sessionSegmentEndTime) {
+			setSessionInfo({
+				...sessionInfo,
+				sessionSegments: [
+					...sessionInfo.sessionSegments,
+					sessionSegment
+				]
+			});
+		}
+	}, [sessionSegment.sessionSegmentEndTime]);
+
+	useEffect(() => {
+		setSessionSegment({
+			sessionSegmentStartTime: '',
+			sessionSegmentTime: 0,
+			sessionSegmentEndTime: ''
+		});
+	}, [sessionInfo.sessionSegments]);
+
+	// pause segment handler
+
+	useEffect(() => {
+		if (pauseSegment.pauseSegmentEndTime) {
+			setSessionInfo({
+				...sessionInfo,
+				pauseSegments: [...sessionInfo.pauseSegments, pauseSegment]
+			});
+		}
+	}, [pauseSegment.pauseSegmentEndTime]);
+
+	useEffect(() => {
+		setPauseSegment({
+			pauseSegmentStartTime: '',
+			pauseSegmentTime: 0,
+			pauseSegmentEndTime: ''
+		});
+	}, [sessionInfo.pauseSegments]);
+
+	useEffect(() => {
+		setSessionInfo({
+			startTime: '',
+			activeTime: 0,
+			endTime: '',
+			pauseTime: 0,
+			sessionSegments: [],
+			pauseSegments: [],
+			totalSessionTime: 0
+		});
+	}, [sessionInfo.endTime]);
 
 	return (
 		<React.Fragment>
@@ -100,7 +275,9 @@ export const CounterProvider = (props: any) => {
 					stopPause,
 					activeCounter,
 					pauseCounter,
-					isEnabled
+					isEnabled,
+					isActive,
+					sessionInfo
 				}}
 			>
 				{props.children}

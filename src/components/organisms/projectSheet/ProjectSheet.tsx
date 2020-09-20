@@ -68,3 +68,6 @@ const ProjectSheetWrapper = styled(View)`
 //----
 
 export default withTheme(ProjectSheet);
+
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 

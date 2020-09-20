@@ -1,11 +1,17 @@
 {
 	"name": "app",
-	"displayName": "app",
+    "displayName": "app",
+    "author": "Danijel Martinek <danijel@martinek.xyz>",
 	"expo": {
 		"name": "app",
 		"slug": "app",
 		"version": "1.0.0",
 		"platforms": ["ios", "android", "web"],
-		"assetBundlePatterns": ["**/*"]
+        "assetBundlePatterns": ["**/*"],
+        "splash": {
+            "image": "./assets/splash_screen_2.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#FFFFFF"
+        }
 	}
 }

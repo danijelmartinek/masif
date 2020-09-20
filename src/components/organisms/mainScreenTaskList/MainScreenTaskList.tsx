@@ -84,8 +84,7 @@ const MainScreenTaskList = (props: PropsWithTheme) => {
 						checked={task.checked}
 						activeOpacity={0.5}
 						checkActiveOpacity={0.5}
-						onPress={() => console.log('press')}
-						onLongPress={() => console.log('long press')}
+						onPress={() => changeCheckedState(i)}
 						onCheckPress={() => changeCheckedState(i)}
 					></TaskItem>
 				))}

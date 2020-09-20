@@ -1,3 +1,6 @@
+// Copyright © 2020, Danijel Martinek. All rights reserved. 
+// This project was created by Danijel Martinek (danijel@martinek.xyz) 
+
 const hexToRGBA = (h: string, a: number): string => {
 	let r: number | string = 0, g: number | string = 0, b: number | string = 0;
 
